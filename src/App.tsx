@@ -1,8 +1,14 @@
-import { Link } from "react-router-dom";
-import "./App.css";
+import { Route, Routes } from "react-router-dom";
+import { lazy } from "react";
+
+const HomePage = lazy(() => import("@/pages/HomePage"));
 
 function App() {
-    return <Link to="http://localhost:8000/api/v1/auth/google">Google</Link>;
+    return (
+        <Routes>
+            <Route path="/" element={<HomePage />} />
+        </Routes>
+    );
 }
 
 export default App;
