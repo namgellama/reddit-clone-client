@@ -1,10 +1,12 @@
-import { Logo } from "@/assets";
-import { Button } from "@/shared/components/ui/button";
 import { Link } from "react-router-dom";
+
+import { Logo } from "@/assets";
+
+import { Button } from "@/shared/components/ui/button";
 
 const NavBar = () => {
     return (
-        <nav className="flex items-center justify-between px-2 py-1 border-b">
+        <nav className="flex items-center justify-between px-2 py-1 border-b sticky top-0">
             <Link to="/">
                 <img
                     src={Logo}

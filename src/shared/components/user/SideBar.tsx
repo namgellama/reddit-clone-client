@@ -17,10 +17,9 @@ const SideBar = () => {
     ];
 
     const { pathname } = useLocation();
-    console.log("🚀 ~ SideBar ~ pathname:", pathname);
 
     return (
-        <aside className="w-64 h-screen border-r py-6 pl-4 pr-8">
+        <aside className="w-64 border-r py-6 pl-4 pr-8 sticky top-0 left-0">
             <ul className="space-y-2">
                 {links.map((link) => (
                     <li
