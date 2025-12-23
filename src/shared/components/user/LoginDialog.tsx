@@ -6,9 +6,6 @@ import { Link } from "react-router-dom";
 
 import { GoogleLogo } from "@/assets";
 
-import type { LoginFormFields } from "@/features/auth/validation";
-import authValidation from "@/features/auth/validation";
-
 import { Form } from "@/shared/components/custom";
 import FormTextInput from "@/shared/components/custom/FormTextInput";
 import { Button } from "@/shared/components/ui/button";
@@ -20,6 +17,13 @@ import {
     DialogTitle,
 } from "@/shared/components/ui/dialog";
 import { Separator } from "@/shared/components/ui/separator";
+import { Spinner } from "@/shared/components/ui/spinner";
+
+import { useLogin } from "@/features/auth/hooks/useLogin";
+
+import type { LoginFormFields } from "@/features/auth/validation";
+
+import authValidation from "@/features/auth/validation";
 
 interface Props {
     isOpen: boolean;
@@ -89,8 +93,10 @@ const LoginForm = () => {
         },
     });
 
+    const { loginMutation, isLoading } = useLogin();
+
     const onSubmit = async (data: LoginFormFields) => {
-        console.log("🚀 ~ onSubmit ~ data:", data);
+        await loginMutation(data);
     };
 
     return (
@@ -128,8 +134,12 @@ const LoginForm = () => {
                 </div>
             </div>
 
-            <Button type="submit" className="py-6 w-full rounded-full">
-                Log In
+            <Button
+                disabled={isLoading}
+                type="submit"
+                className="py-6 w-full rounded-full"
+            >
+                {isLoading ? <Spinner /> : "Log In"}
             </Button>
         </Form>
     );
