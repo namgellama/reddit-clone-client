@@ -9,6 +9,8 @@ import { GoogleLogo } from "@/assets";
 import type { LoginFormFields } from "@/features/auth/validation";
 import authValidation from "@/features/auth/validation";
 
+import { Form } from "@/shared/components/custom";
+import FormTextInput from "@/shared/components/custom/FormTextInput";
 import { Button } from "@/shared/components/ui/button";
 import {
     Dialog,
@@ -17,16 +19,7 @@ import {
     DialogHeader,
     DialogTitle,
 } from "@/shared/components/ui/dialog";
-import {
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "@/shared/components/ui/form";
-import { Input } from "@/shared/components/ui/input";
 import { Separator } from "@/shared/components/ui/separator";
-import { Form } from "../custom";
 
 interface Props {
     isOpen: boolean;
@@ -36,7 +29,7 @@ interface Props {
 const LoginDialog = ({ isOpen, setIsOpen }: Props) => {
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <DialogContent className="p-16 min-w-137.5 h-[85vh] rounded-2xl ">
+            <DialogContent className="p-12 min-w-137.5 h-[85vh] rounded-2xl ">
                 <div className="flex flex-col gap-5">
                     <DialogHeader>
                         <DialogTitle className="text-center text-2xl font-bold">
@@ -107,33 +100,16 @@ const LoginForm = () => {
             className="w-full h-full flex flex-col justify-between"
         >
             <div className="space-y-6">
-                <FormField
+                <FormTextInput
                     control={form.control}
+                    label="Email"
                     name="email"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Email</FormLabel>
-                            <FormControl>
-                                <Input {...field} />
-                            </FormControl>
-
-                            <FormMessage />
-                        </FormItem>
-                    )}
                 />
-                <FormField
+                <FormTextInput
+                    type="password"
                     control={form.control}
+                    label="Password"
                     name="password"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Password</FormLabel>
-                            <FormControl>
-                                <Input {...field} />
-                            </FormControl>
-
-                            <FormMessage />
-                        </FormItem>
-                    )}
                 />
 
                 <div className="flex flex-col gap-4">
