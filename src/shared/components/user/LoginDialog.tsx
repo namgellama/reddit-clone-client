@@ -18,7 +18,6 @@ import {
     DialogTitle,
 } from "@/shared/components/ui/dialog";
 import {
-    Form,
     FormControl,
     FormField,
     FormItem,
@@ -27,6 +26,7 @@ import {
 } from "@/shared/components/ui/form";
 import { Input } from "@/shared/components/ui/input";
 import { Separator } from "@/shared/components/ui/separator";
+import { Form } from "../custom";
 
 interface Props {
     isOpen: boolean;
@@ -36,7 +36,7 @@ interface Props {
 const LoginDialog = ({ isOpen, setIsOpen }: Props) => {
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
-            <DialogContent className="p-20 min-w-137.5 h-[75vh] rounded-2xl ">
+            <DialogContent className="p-16 min-w-137.5 h-[85vh] rounded-2xl ">
                 <div className="flex flex-col gap-5">
                     <DialogHeader>
                         <DialogTitle className="text-center text-2xl font-bold">
@@ -101,61 +101,60 @@ const LoginForm = () => {
     };
 
     return (
-        <Form {...form}>
-            <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="w-full h-full flex flex-col justify-between"
-            >
-                <div className="space-y-6">
-                    <FormField
-                        control={form.control}
-                        name="email"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Email</FormLabel>
-                                <FormControl>
-                                    <Input {...field} />
-                                </FormControl>
+        <Form
+            form={form}
+            onSubmit={onSubmit}
+            className="w-full h-full flex flex-col justify-between"
+        >
+            <div className="space-y-6">
+                <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Email</FormLabel>
+                            <FormControl>
+                                <Input {...field} />
+                            </FormControl>
 
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="password"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Password</FormLabel>
-                                <FormControl>
-                                    <Input {...field} />
-                                </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Password</FormLabel>
+                            <FormControl>
+                                <Input {...field} />
+                            </FormControl>
 
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
 
-                    <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-4">
+                    <Link to="" className="text-blue-500 text-sm">
+                        Forgot Password?
+                    </Link>
+
+                    <div className="space-x-1">
+                        <span className="text-sm text-black/70">
+                            New to Reddit?
+                        </span>
                         <Link to="" className="text-blue-500 text-sm">
-                            Forgot Password?
+                            Sign Up
                         </Link>
-
-                        <div className="space-x-1">
-                            <span className="text-sm text-black/70">
-                                New to Reddit?
-                            </span>
-                            <Link to="" className="text-blue-500 text-sm">
-                                Sign Up
-                            </Link>
-                        </div>
                     </div>
                 </div>
+            </div>
 
-                <Button type="submit" className="py-6 w-full rounded-full">
-                    Log In
-                </Button>
-            </form>
+            <Button type="submit" className="py-6 w-full rounded-full">
+                Log In
+            </Button>
         </Form>
     );
 };
