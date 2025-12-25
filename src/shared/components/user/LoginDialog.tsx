@@ -19,7 +19,7 @@ import {
 import { Separator } from "@/shared/components/ui/separator";
 import { Spinner } from "@/shared/components/ui/spinner";
 
-import { useLogin } from "@/features/auth/hooks/useLogin";
+import { useAuth } from "@/contexts/AuthContext";
 
 import type { LoginFormFields } from "@/features/auth/validation";
 
@@ -85,6 +85,8 @@ const LoginDialog = ({ isOpen, setIsOpen }: Props) => {
 export default LoginDialog;
 
 const LoginForm = () => {
+    const { isLoading, login } = useAuth();
+
     const form = useForm<LoginFormFields>({
         resolver: zodResolver(authValidation.loginSchema),
         defaultValues: {
@@ -93,10 +95,8 @@ const LoginForm = () => {
         },
     });
 
-    const { loginMutation, isLoading } = useLogin();
-
     const onSubmit = async (data: LoginFormFields) => {
-        await loginMutation(data);
+        await login(data);
     };
 
     return (
