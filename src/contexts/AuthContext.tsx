@@ -7,6 +7,7 @@ import {
     type ReactNode,
     type SetStateAction,
 } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import api, {
     type AxiosRequestConfigWithRetry,
@@ -14,13 +15,13 @@ import api, {
 } from "@/shared/lib/api";
 
 import { useLogin } from "@/features/auth/hooks/useLogin";
+import { useGetMe } from "@/features/user/hooks/useGetMe";
 
 import type { LoginResponse } from "@/features/auth/types/login";
 import type { LoginFormFields } from "@/features/auth/validation";
 import type { User } from "@/features/user/types";
 import type { Response } from "@/shared/types/response";
 
-import { useGetMe } from "@/features/user/hooks/useGetMe";
 import { API_ENDPOINT } from "@/shared/constants/api.constants";
 
 interface AuthContextType {
@@ -43,6 +44,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const { loginMutation } = useLogin();
     const { currentUser, isLoading: isCurrentUserLoading } = useGetMe(!!token);
 
+    const [searchParams, _] = useSearchParams();
+
+    // Set token from URL query param (after OAuth redirect)
+    useEffect(() => {
+        if (searchParams.get("accessToken")) {
+            const accessToken = searchParams.get("accessToken")!;
+            setToken(accessToken);
+        }
+    }, []);
+
+    // Bootstrap authentication when the app loads
     useEffect(() => {
         const bootstrapAuth = async () => {
             setIsLoading(true);
@@ -72,6 +84,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
     }, [currentUser]);
 
+    // Set token in every request header
     useEffect(() => {
         const authInterceptor = api.interceptors.request.use(
             (config: InternalAxiosRequestConfigWithRetry) => {
@@ -86,6 +99,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return () => api.interceptors.request.eject(authInterceptor);
     }, [token]);
 
+    // Handle token refresh on 401 responses
     useEffect(() => {
         const refreshInterceptor = api.interceptors.response.use(
             (response) => response,

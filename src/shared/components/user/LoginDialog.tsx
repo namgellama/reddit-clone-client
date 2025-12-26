@@ -22,8 +22,9 @@ import { Spinner } from "@/shared/components/ui/spinner";
 import { useAuth } from "@/contexts/AuthContext";
 
 import type { LoginFormFields } from "@/features/auth/validation";
-
 import authValidation from "@/features/auth/validation";
+
+import { BASE_URL } from "@/shared/lib/api";
 
 interface Props {
     isOpen: boolean;
@@ -56,6 +57,9 @@ const LoginDialog = ({ isOpen, setIsOpen }: Props) => {
                     <Button
                         variant="outline"
                         className="rounded-2xl w-full relative py-5"
+                        onClick={() =>
+                            (window.location.href = `${BASE_URL}/api/v1/auth/google`)
+                        }
                     >
                         <img
                             src={GoogleLogo}
