@@ -7,14 +7,14 @@ import {
     type ReactNode,
     type SetStateAction,
 } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import api, {
     type AxiosRequestConfigWithRetry,
     type InternalAxiosRequestConfigWithRetry,
 } from "@/shared/lib/api";
 
-import { useLogin } from "@/features/auth/hooks/useLogin";
+import { useLogin, useLogout } from "@/features/auth/hooks/useLogin";
 import { useGetMe } from "@/features/user/hooks/useGetMe";
 
 import type { LoginResponse } from "@/features/auth/types/login";
@@ -30,6 +30,7 @@ interface AuthContextType {
     isAuthenticated: boolean;
     setUser: Dispatch<SetStateAction<User | null>>;
     login: (data: LoginFormFields) => Promise<void>;
+    logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
@@ -41,14 +42,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             ? JSON.parse(localStorage.getItem("user")!)
             : null
     );
+    5;
     const [isLoading, setIsLoading] = useState(false);
 
     const isAuthenticated = !!user;
 
     const { loginMutation } = useLogin();
+    const { logoutMutation } = useLogout();
     const { currentUser, isLoading: isCurrentUserLoading } = useGetMe(!!token);
 
     const [searchParams, setSearchParams] = useSearchParams();
+    const navigate = useNavigate();
 
     // Set token from URL query param (after OAuth redirect)
     useEffect(() => {
@@ -153,6 +157,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setIsLoading(false);
     };
 
+    const logout = async () => {
+        await logoutMutation();
+        setToken(null);
+        setUser(null);
+        setIsLoading(false);
+        navigate("/");
+    };
+
     return (
         <AuthContext.Provider
             value={{
@@ -161,6 +173,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 setUser,
                 isAuthenticated,
                 login,
+                logout,
             }}
         >
             {children}

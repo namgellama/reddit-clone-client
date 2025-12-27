@@ -21,8 +21,7 @@ import { Bell, LogOut, SquarePlus } from "lucide-react";
 const NavBar = () => {
     const [isOpen, setIsOpen] = useState(false);
 
-    const { isAuthenticated, user } = useAuth();
-    console.log("🚀 ~ NavBar ~ isAuthenticated:", isAuthenticated);
+    const { isAuthenticated, user, logout } = useAuth();
 
     return (
         <nav className="flex items-center justify-between px-2 py-1 border-b sticky top-0">
@@ -66,7 +65,10 @@ const NavBar = () => {
                             </Avatar>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="w-60">
-                            <DropdownMenuItem className="hover:bg-muted cursor-pointer px-4 py-2">
+                            <DropdownMenuItem
+                                className="hover:bg-muted cursor-pointer px-4 py-2"
+                                onClick={logout}
+                            >
                                 <LogOut /> Logout
                             </DropdownMenuItem>
                         </DropdownMenuContent>

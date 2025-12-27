@@ -16,6 +16,14 @@ const authApi = {
         );
         return response.data;
     },
+
+    // Logout
+    logout: async () => {
+        const response = await api.post<Response<void>>(
+            API_ENDPOINT.auth.logout
+        );
+        return response.data;
+    },
 };
 
 export default authApi;
