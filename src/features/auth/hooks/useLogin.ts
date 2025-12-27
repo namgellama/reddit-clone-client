@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import authApi from "@/features/auth/api";
 
@@ -24,4 +24,25 @@ export const useLogin = () => {
     });
 
     return { loginMutation, isLoading };
+};
+
+// Logout
+export const useLogout = () => {
+    const queryClient = useQueryClient();
+
+    const { mutateAsync: logoutMutation, isPending: isLoading } = useMutation<
+        Response<void>,
+        ApiError,
+        void
+    >({
+        mutationFn: authApi.logout,
+        onSuccess: () => {
+            queryClient.clear();
+        },
+        onError: (error) => {
+            handleErrorResponse(error, "Error logging out");
+        },
+    });
+
+    return { logoutMutation, isLoading };
 };

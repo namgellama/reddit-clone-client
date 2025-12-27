@@ -7,14 +7,14 @@ import {
     type ReactNode,
     type SetStateAction,
 } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import api, {
     type AxiosRequestConfigWithRetry,
     type InternalAxiosRequestConfigWithRetry,
 } from "@/shared/lib/api";
 
-import { useLogin } from "@/features/auth/hooks/useLogin";
+import { useLogin, useLogout } from "@/features/auth/hooks/useLogin";
 import { useGetMe } from "@/features/user/hooks/useGetMe";
 
 import type { LoginResponse } from "@/features/auth/types/login";
@@ -30,27 +30,36 @@ interface AuthContextType {
     isAuthenticated: boolean;
     setUser: Dispatch<SetStateAction<User | null>>;
     login: (data: LoginFormFields) => Promise<void>;
+    logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [token, setToken] = useState<string | null>(null);
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<User | null>(
+        localStorage.getItem("user")
+            ? JSON.parse(localStorage.getItem("user")!)
+            : null
+    );
+    5;
     const [isLoading, setIsLoading] = useState(false);
 
     const isAuthenticated = !!user;
 
     const { loginMutation } = useLogin();
+    const { logoutMutation } = useLogout();
     const { currentUser, isLoading: isCurrentUserLoading } = useGetMe(!!token);
 
-    const [searchParams, _] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();
+    const navigate = useNavigate();
 
     // Set token from URL query param (after OAuth redirect)
     useEffect(() => {
         if (searchParams.get("accessToken")) {
             const accessToken = searchParams.get("accessToken")!;
             setToken(accessToken);
+            setSearchParams({});
         }
     }, []);
 
@@ -80,6 +89,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         if (currentUser) {
             setUser(currentUser);
+            localStorage.setItem("user", JSON.stringify(currentUser));
             setIsLoading(false);
         }
     }, [currentUser]);
@@ -147,6 +157,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setIsLoading(false);
     };
 
+    const logout = async () => {
+        await logoutMutation();
+        setToken(null);
+        setUser(null);
+        setIsLoading(false);
+        navigate("/");
+    };
+
     return (
         <AuthContext.Provider
             value={{
@@ -155,6 +173,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 setUser,
                 isAuthenticated,
                 login,
+                logout,
             }}
         >
             {children}

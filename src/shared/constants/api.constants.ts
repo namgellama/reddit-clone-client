@@ -4,6 +4,7 @@ export const API_ENDPOINT = {
     // Auth
     auth: {
         login: `${BASE_URL}/auth/login`,
+        logout: `${BASE_URL}/auth/logout`,
         refreshToken: `${BASE_URL}/auth/refresh-token`,
     },
 
