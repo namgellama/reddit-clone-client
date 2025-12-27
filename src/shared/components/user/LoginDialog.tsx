@@ -79,7 +79,7 @@ const LoginDialog = ({ isOpen, setIsOpen }: Props) => {
                         <Separator className="w-2/5!" />
                     </div>
 
-                    <LoginForm />
+                    <LoginForm setIsOpen={setIsOpen} />
                 </div>
             </DialogContent>
         </Dialog>
@@ -88,7 +88,11 @@ const LoginDialog = ({ isOpen, setIsOpen }: Props) => {
 
 export default LoginDialog;
 
-const LoginForm = () => {
+const LoginForm = ({
+    setIsOpen,
+}: {
+    setIsOpen: Dispatch<SetStateAction<boolean>>;
+}) => {
     const { isLoading, login } = useAuth();
 
     const form = useForm<LoginFormFields>({
@@ -100,7 +104,10 @@ const LoginForm = () => {
     });
 
     const onSubmit = async (data: LoginFormFields) => {
-        await login(data);
+        try {
+            await login(data);
+            setIsOpen(false);
+        } catch (error) {}
     };
 
     return (

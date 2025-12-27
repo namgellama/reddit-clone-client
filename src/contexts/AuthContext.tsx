@@ -36,7 +36,11 @@ const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [token, setToken] = useState<string | null>(null);
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<User | null>(
+        localStorage.getItem("user")
+            ? JSON.parse(localStorage.getItem("user")!)
+            : null
+    );
     const [isLoading, setIsLoading] = useState(false);
 
     const isAuthenticated = !!user;
@@ -44,13 +48,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const { loginMutation } = useLogin();
     const { currentUser, isLoading: isCurrentUserLoading } = useGetMe(!!token);
 
-    const [searchParams, _] = useSearchParams();
+    const [searchParams, setSearchParams] = useSearchParams();
 
     // Set token from URL query param (after OAuth redirect)
     useEffect(() => {
         if (searchParams.get("accessToken")) {
             const accessToken = searchParams.get("accessToken")!;
             setToken(accessToken);
+            setSearchParams({});
         }
     }, []);
 
@@ -80,6 +85,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         if (currentUser) {
             setUser(currentUser);
+            localStorage.setItem("user", JSON.stringify(currentUser));
             setIsLoading(false);
         }
     }, [currentUser]);
