@@ -5,6 +5,7 @@ import { Logo } from "@/assets";
 
 import { useAuth } from "@/contexts/AuthContext";
 
+import { AuthDialog } from "@/features/auth/components";
 import { Avatar, AvatarFallback } from "@/shared/components/ui/avatar";
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
@@ -14,7 +15,6 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/shared/components/ui/dropdown-menu";
-import LoginDialog from "./LoginDialog";
 
 import { Bell, LogOut, SquarePlus } from "lucide-react";
 
@@ -76,7 +76,7 @@ const NavBar = () => {
                 </div>
             )}
 
-            <LoginDialog isOpen={isOpen} setIsOpen={setIsOpen} />
+            <AuthDialog isOpen={isOpen} setIsOpen={setIsOpen} />
         </nav>
     );
 };

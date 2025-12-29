@@ -1,13 +1,7 @@
-import type { Dispatch, SetStateAction } from "react";
-
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { useState, type Dispatch, type SetStateAction } from "react";
 
 import { GoogleLogo } from "@/assets";
 
-import { Form } from "@/shared/components/custom";
-import FormTextInput from "@/shared/components/custom/FormTextInput";
 import { Button } from "@/shared/components/ui/button";
 import {
     Dialog,
@@ -17,12 +11,8 @@ import {
     DialogTitle,
 } from "@/shared/components/ui/dialog";
 import { Separator } from "@/shared/components/ui/separator";
-import { Spinner } from "@/shared/components/ui/spinner";
-
-import { useAuth } from "@/contexts/AuthContext";
-
-import type { LoginFormFields } from "@/features/auth/validation";
-import authValidation from "@/features/auth/validation";
+import LoginForm from "./LoginForm";
+import SignUpForm from "./SignUpForm";
 
 import { BASE_URL } from "@/shared/lib/api";
 
@@ -32,13 +22,15 @@ interface Props {
 }
 
 const LoginDialog = ({ isOpen, setIsOpen }: Props) => {
+    const [isLogin, setIsLogin] = useState(true);
+
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogContent className="p-12 min-w-137.5 h-[85vh] rounded-2xl ">
                 <div className="flex flex-col gap-5">
                     <DialogHeader>
                         <DialogTitle className="text-center text-2xl font-bold">
-                            Log In
+                            {isLogin ? "Log In" : "Sign Up"}
                         </DialogTitle>
                         <DialogDescription>
                             By continuing, you agree to our{" "}
@@ -79,7 +71,17 @@ const LoginDialog = ({ isOpen, setIsOpen }: Props) => {
                         <Separator className="w-2/5!" />
                     </div>
 
-                    <LoginForm setIsOpen={setIsOpen} />
+                    {isLogin ? (
+                        <LoginForm
+                            setIsOpen={setIsOpen}
+                            setIsLogin={setIsLogin}
+                        />
+                    ) : (
+                        <SignUpForm
+                            setIsOpen={setIsOpen}
+                            setIsLogin={setIsLogin}
+                        />
+                    )}
                 </div>
             </DialogContent>
         </Dialog>
@@ -87,71 +89,3 @@ const LoginDialog = ({ isOpen, setIsOpen }: Props) => {
 };
 
 export default LoginDialog;
-
-const LoginForm = ({
-    setIsOpen,
-}: {
-    setIsOpen: Dispatch<SetStateAction<boolean>>;
-}) => {
-    const { isLoading, login } = useAuth();
-
-    const form = useForm<LoginFormFields>({
-        resolver: zodResolver(authValidation.loginSchema),
-        defaultValues: {
-            email: "",
-            password: "",
-        },
-    });
-
-    const onSubmit = async (data: LoginFormFields) => {
-        try {
-            await login(data);
-            setIsOpen(false);
-        } catch (error) {}
-    };
-
-    return (
-        <Form
-            form={form}
-            onSubmit={onSubmit}
-            className="w-full h-full flex flex-col justify-between"
-        >
-            <div className="space-y-6">
-                <FormTextInput
-                    control={form.control}
-                    label="Email"
-                    name="email"
-                />
-                <FormTextInput
-                    type="password"
-                    control={form.control}
-                    label="Password"
-                    name="password"
-                />
-
-                <div className="flex flex-col gap-4">
-                    <Link to="" className="text-blue-500 text-sm">
-                        Forgot Password?
-                    </Link>
-
-                    <div className="space-x-1">
-                        <span className="text-sm text-black/70">
-                            New to Reddit?
-                        </span>
-                        <Link to="" className="text-blue-500 text-sm">
-                            Sign Up
-                        </Link>
-                    </div>
-                </div>
-            </div>
-
-            <Button
-                disabled={isLoading}
-                type="submit"
-                className="py-6 w-full rounded-full"
-            >
-                {isLoading ? <Spinner /> : "Log In"}
-            </Button>
-        </Form>
-    );
-};
