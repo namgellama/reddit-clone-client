@@ -14,7 +14,8 @@ import api, {
     type InternalAxiosRequestConfigWithRetry,
 } from "@/shared/lib/api";
 
-import { useLogin, useLogout } from "@/features/auth/hooks/useLogin";
+import { useLogin } from "@/features/auth/hooks/useLogin";
+import { useLogout } from "@/features/auth/hooks/useLogout";
 import { useGetMe } from "@/features/user/hooks/useGetMe";
 
 import type { LoginResponse } from "@/features/auth/types/login";
