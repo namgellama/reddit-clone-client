@@ -58,9 +58,8 @@ const NavBar = () => {
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Avatar>
-                                <AvatarFallback className="bg-gray-500 text-background">
-                                    {user?.firstName.charAt(0)}
-                                    {user?.lastName.charAt(0)}
+                                <AvatarFallback className="bg-gray-500 text-background uppercase">
+                                    {user?.username.charAt(0)}
                                 </AvatarFallback>
                             </Avatar>
                         </DropdownMenuTrigger>
