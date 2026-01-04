@@ -14,6 +14,7 @@ import { Separator } from "@/shared/components/ui/separator";
 import LoginForm from "./LoginForm";
 import SignUpForm from "./SignUpForm";
 
+import { useRegisterUser } from "@/contexts/RegisterUserContext";
 import { BASE_URL } from "@/shared/lib/api";
 
 interface Props {
@@ -21,8 +22,32 @@ interface Props {
     setIsOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-const LoginDialog = ({ isOpen, setIsOpen }: Props) => {
+const AuthDialog = ({ isOpen, setIsOpen }: Props) => {
     const [isLogin, setIsLogin] = useState(true);
+    const [step, setStep] = useState(1);
+    const { fields } = useRegisterUser();
+
+    const title = isLogin
+        ? "Log In"
+        : step === 1
+        ? "Sign up"
+        : step === 2
+        ? "Verify your email"
+        : "Create your username and password";
+
+    const description =
+        isLogin || step === 1 ? (
+            <>
+                By continuing, you agree to our{" "}
+                <span className="text-blue-500">User Agreement</span> and
+                acknowledge that you understand the{" "}
+                <span className="text-blue-500">Privacy Policy</span>.
+            </>
+        ) : step === 2 ? (
+            `Enter the 6-digits code sent to ${fields?.email}`
+        ) : (
+            "Reddit is anonymouse, so your username is what you'll go by here. Choose wisely-because once you get a name you can't change it."
+        );
 
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -30,46 +55,42 @@ const LoginDialog = ({ isOpen, setIsOpen }: Props) => {
                 <div className="flex flex-col gap-5">
                     <DialogHeader>
                         <DialogTitle className="text-center text-2xl font-bold">
-                            {isLogin ? "Log In" : "Sign Up"}
+                            {title}
                         </DialogTitle>
-                        <DialogDescription>
-                            By continuing, you agree to our{" "}
-                            <span className="text-blue-500">
-                                User Agreement
-                            </span>{" "}
-                            and acknowledge that you understand the{" "}
-                            <span className="text-blue-500">
-                                Privacy Policy
-                            </span>
-                            .
+                        <DialogDescription className="text-center">
+                            {description}
                         </DialogDescription>
                     </DialogHeader>
 
                     {/* OAuth */}
-                    <Button
-                        variant="outline"
-                        className="rounded-2xl w-full relative py-5"
-                        onClick={() =>
-                            (window.location.href = `${BASE_URL}/api/v1/auth/google`)
-                        }
-                    >
-                        <img
-                            src={GoogleLogo}
-                            alt="Google logo"
-                            className="size-5 absolute left-3"
-                        />
-                        <p className="font-medium text-center">
-                            Continue with Google
-                        </p>
-                    </Button>
+                    {(isLogin || step == 1) && (
+                        <>
+                            <Button
+                                variant="outline"
+                                className="rounded-2xl w-full relative py-5"
+                                onClick={() =>
+                                    (window.location.href = `${BASE_URL}/api/v1/auth/google`)
+                                }
+                            >
+                                <img
+                                    src={GoogleLogo}
+                                    alt="Google logo"
+                                    className="size-5 absolute left-3"
+                                />
+                                <p className="font-medium text-center">
+                                    Continue with Google
+                                </p>
+                            </Button>
 
-                    <div className="flex items-center justify-between gap-4">
-                        <Separator className="w-2/5!" />
-                        <span className="text-sm text-muted-foreground">
-                            OR
-                        </span>
-                        <Separator className="w-2/5!" />
-                    </div>
+                            <div className="flex items-center justify-between gap-4">
+                                <Separator className="w-2/5!" />
+                                <span className="text-sm text-muted-foreground">
+                                    OR
+                                </span>
+                                <Separator className="w-2/5!" />
+                            </div>
+                        </>
+                    )}
 
                     {isLogin ? (
                         <LoginForm
@@ -78,7 +99,8 @@ const LoginDialog = ({ isOpen, setIsOpen }: Props) => {
                         />
                     ) : (
                         <SignUpForm
-                            setIsOpen={setIsOpen}
+                            step={step}
+                            setStep={setStep}
                             setIsLogin={setIsLogin}
                         />
                     )}
@@ -88,4 +110,4 @@ const LoginDialog = ({ isOpen, setIsOpen }: Props) => {
     );
 };
 
-export default LoginDialog;
+export default AuthDialog;

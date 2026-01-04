@@ -31,10 +31,8 @@ const LoginForm = ({ setIsOpen, setIsLogin }: Props) => {
     });
 
     const onSubmit = async (data: LoginFormFields) => {
-        try {
-            await login(data);
-            setIsOpen(false);
-        } catch (error) {}
+        await login(data);
+        setIsOpen(false);
     };
 
     return (

@@ -16,6 +16,7 @@ import {
     DropdownMenuTrigger,
 } from "@/shared/components/ui/dropdown-menu";
 
+import { RegisterUserProvider } from "@/contexts/RegisterUserContext";
 import { Bell, LogOut, SquarePlus } from "lucide-react";
 
 const NavBar = () => {
@@ -75,7 +76,9 @@ const NavBar = () => {
                 </div>
             )}
 
-            <AuthDialog isOpen={isOpen} setIsOpen={setIsOpen} />
+            <RegisterUserProvider>
+                <AuthDialog isOpen={isOpen} setIsOpen={setIsOpen} />
+            </RegisterUserProvider>
         </nav>
     );
 };
