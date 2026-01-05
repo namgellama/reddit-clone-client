@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-import { Logo } from "@/assets";
-
-import { useAuth } from "@/contexts/AuthContext";
+import { Bell, LogOut, SquarePlus } from "lucide-react";
 
 import { AuthDialog } from "@/features/auth/components";
 import { Avatar, AvatarFallback } from "@/shared/components/ui/avatar";
@@ -16,8 +14,8 @@ import {
     DropdownMenuTrigger,
 } from "@/shared/components/ui/dropdown-menu";
 
-import { RegisterUserProvider } from "@/contexts/RegisterUserContext";
-import { Bell, LogOut, SquarePlus } from "lucide-react";
+import { Logo } from "@/assets";
+import { useAuth } from "@/contexts/AuthContext";
 
 const NavBar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -76,9 +74,7 @@ const NavBar = () => {
                 </div>
             )}
 
-            <RegisterUserProvider>
-                <AuthDialog isOpen={isOpen} setIsOpen={setIsOpen} />
-            </RegisterUserProvider>
+            <AuthDialog isOpen={isOpen} setIsOpen={setIsOpen} />
         </nav>
     );
 };

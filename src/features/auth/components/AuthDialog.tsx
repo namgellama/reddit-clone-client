@@ -1,6 +1,6 @@
 import { useState, type Dispatch, type SetStateAction } from "react";
 
-import { GoogleLogo } from "@/assets";
+import { ArrowLeft } from "lucide-react";
 
 import { Button } from "@/shared/components/ui/button";
 import {
@@ -14,7 +14,7 @@ import { Separator } from "@/shared/components/ui/separator";
 import LoginForm from "./LoginForm";
 import SignUpForm from "./SignUpForm";
 
-import { useRegisterUser } from "@/contexts/RegisterUserContext";
+import { GoogleLogo } from "@/assets";
 import { BASE_URL } from "@/shared/lib/api";
 
 interface Props {
@@ -23,9 +23,9 @@ interface Props {
 }
 
 const AuthDialog = ({ isOpen, setIsOpen }: Props) => {
+    const [email, setEmail] = useState("");
     const [isLogin, setIsLogin] = useState(true);
     const [step, setStep] = useState(1);
-    const { fields } = useRegisterUser();
 
     const title = isLogin
         ? "Log In"
@@ -44,14 +44,30 @@ const AuthDialog = ({ isOpen, setIsOpen }: Props) => {
                 <span className="text-blue-500">Privacy Policy</span>.
             </>
         ) : step === 2 ? (
-            `Enter the 6-digits code sent to ${fields?.email}`
+            `Enter the 6-digits code sent to ${email}`
         ) : (
             "Reddit is anonymouse, so your username is what you'll go by here. Choose wisely-because once you get a name you can't change it."
         );
 
+    const handleOpenChange = (open: boolean) => {
+        setIsOpen(open);
+
+        if (!open) {
+            setStep(1);
+            setIsLogin(true);
+        }
+    };
+
     return (
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <Dialog open={isOpen} onOpenChange={handleOpenChange}>
             <DialogContent className="p-12 min-w-137.5 h-[85vh] rounded-2xl ">
+                <Button
+                    variant="ghost"
+                    className="size-8 rounded-full absolute top-2 left-2"
+                >
+                    <ArrowLeft />
+                </Button>
+
                 <div className="flex flex-col gap-5">
                     <DialogHeader>
                         <DialogTitle className="text-center text-2xl font-bold">
@@ -102,6 +118,8 @@ const AuthDialog = ({ isOpen, setIsOpen }: Props) => {
                             step={step}
                             setStep={setStep}
                             setIsLogin={setIsLogin}
+                            email={email}
+                            setEmail={setEmail}
                         />
                     )}
                 </div>

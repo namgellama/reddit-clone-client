@@ -13,7 +13,6 @@ import {
 } from "@/shared/components/ui/input-otp";
 import { Spinner } from "@/shared/components/ui/spinner";
 
-import { useRegisterUser } from "@/contexts/RegisterUserContext";
 import { useRegister } from "../hooks/useRegister";
 import { useRegisterEmail } from "../hooks/useRegisterEmail";
 import { useVerifyEmail } from "../hooks/useVerifyEmail";
@@ -27,16 +26,28 @@ interface Props {
     step: number;
     setStep: Dispatch<SetStateAction<number>>;
     setIsLogin: Dispatch<SetStateAction<boolean>>;
+    email: string;
+    setEmail: Dispatch<SetStateAction<string>>;
 }
 
-const SignUpForm = ({ step, setStep, setIsLogin }: Props) => {
+const SignUpForm = ({ step, setStep, setIsLogin, email, setEmail }: Props) => {
     return (
         <>
             {step === 1 && (
-                <RegisterEmail setIsLogin={setIsLogin} setStep={setStep} />
+                <RegisterEmail
+                    setIsLogin={setIsLogin}
+                    setStep={setStep}
+                    setEmail={setEmail}
+                />
             )}
-            {step === 2 && <VerifyEmail setStep={setStep} />}
-            {step === 3 && <RegisterUser setIsLogin={setIsLogin} />}
+            {step === 2 && <VerifyEmail setStep={setStep} email={email} />}
+            {step === 3 && (
+                <RegisterUser
+                    setIsLogin={setIsLogin}
+                    setStep={setStep}
+                    email={email}
+                />
+            )}
         </>
     );
 };
@@ -46,23 +57,27 @@ export default SignUpForm;
 interface RegisterEmailProps {
     setIsLogin: Dispatch<SetStateAction<boolean>>;
     setStep: Dispatch<SetStateAction<number>>;
+    setEmail: Dispatch<SetStateAction<string>>;
 }
 
-const RegisterEmail = ({ setIsLogin, setStep }: RegisterEmailProps) => {
+const RegisterEmail = ({
+    setIsLogin,
+    setStep,
+    setEmail,
+}: RegisterEmailProps) => {
     const form = useForm<RegisterEmailFormFields>({
         resolver: zodResolver(authValidation.registerEmail),
         defaultValues: {
             email: "",
         },
     });
-    const { setFields } = useRegisterUser();
 
     const { registerEmailMutation, isLoading } = useRegisterEmail();
 
     const onSubmit = async (data: RegisterEmailFormFields) => {
         try {
             await registerEmailMutation(data);
-            setFields((prev) => ({ ...prev, email: data.email }));
+            setEmail(data.email);
             setStep(2);
         } catch (error) {}
     };
@@ -107,20 +122,20 @@ const RegisterEmail = ({ setIsLogin, setStep }: RegisterEmailProps) => {
 };
 
 interface VerifyEmailProps {
+    email: string;
     setStep: Dispatch<SetStateAction<number>>;
 }
 
-const VerifyEmail = ({ setStep }: VerifyEmailProps) => {
+const VerifyEmail = ({ email, setStep }: VerifyEmailProps) => {
     const [otp, setOtp] = useState("");
-    const { fields } = useRegisterUser();
 
     const { verifyEmailMutation, isLoading } = useVerifyEmail();
 
     const handleVerifyEmail = async () => {
-        if (otp.length !== 6) return;
+        if (otp.length !== 6 || !email) return;
 
         await verifyEmailMutation({
-            email: fields.email,
+            email,
             otp: Number(otp),
         });
 
@@ -158,16 +173,16 @@ const VerifyEmail = ({ setStep }: VerifyEmailProps) => {
 };
 
 interface RegisterUserProps {
+    email: string;
     setIsLogin: Dispatch<SetStateAction<boolean>>;
+    setStep: Dispatch<SetStateAction<number>>;
 }
 
-const RegisterUser = ({ setIsLogin }: RegisterUserProps) => {
-    const { fields } = useRegisterUser();
-
+const RegisterUser = ({ email, setIsLogin, setStep }: RegisterUserProps) => {
     const form = useForm<RegisterUserFormFields>({
         resolver: zodResolver(authValidation.registerUser),
         defaultValues: {
-            email: fields.email ?? "",
+            email: email ?? "",
             username: "",
             password: "",
             confirmPassword: "",
@@ -179,6 +194,7 @@ const RegisterUser = ({ setIsLogin }: RegisterUserProps) => {
     const onSubmit = async (data: RegisterUserFormFields) => {
         await registerMuatation(data);
         setIsLogin(true);
+        setStep(1);
     };
 
     return (
