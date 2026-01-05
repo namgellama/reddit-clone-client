@@ -1,9 +1,10 @@
-import type { Post } from "@/features/types";
+import { useQuery } from "@tanstack/react-query";
+import type { AxiosError } from "axios";
+
 import { API_ENDPOINT } from "@/shared/constants/api.constants";
 import api from "@/shared/lib/api";
 import type { Response } from "@/shared/types/response";
-import { useQuery } from "@tanstack/react-query";
-import type { AxiosError } from "axios";
+import type { Post } from "../types";
 
 export const useGetAllPosts = () => {
     const getAllPostsRequest = async (): Promise<Response<Post[]>> => {
