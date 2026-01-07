@@ -25,7 +25,15 @@ const PostCard = ({ post }: Props) => {
             </div>
 
             <h2 className="text-lg font-medium">{post.title}</h2>
-            <p className="text-sm text-foreground/85">{post.content}</p>
+            {post.image ? (
+                <img
+                    src={post.image}
+                    alt={post.title}
+                    className="w-full h-128 object-contain bg-black/75 rounded-2xl"
+                />
+            ) : (
+                <p className="text-sm text-foreground/85">{post.content}</p>
+            )}
         </div>
     );
 };
