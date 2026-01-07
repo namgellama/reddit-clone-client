@@ -9,16 +9,19 @@ import type { RegisterUserFormFields } from "../validation";
 
 // Sign up - register user
 export const useRegister = () => {
-    const { mutateAsync: registerMuatation, isPending: isLoading } =
-        useMutation<Response<void>, ApiError, RegisterUserFormFields>({
-            mutationFn: authApi.registerUser,
-            onSuccess: () => {
-                toast.success("User registered successfully");
-            },
-            onError: (error) => {
-                handleErrorResponse(error, "Error registering user");
-            },
-        });
+    const { mutateAsync: registerMutation, isPending: isLoading } = useMutation<
+        Response<void>,
+        ApiError,
+        RegisterUserFormFields
+    >({
+        mutationFn: authApi.registerUser,
+        onSuccess: () => {
+            toast.success("User registered successfully");
+        },
+        onError: (error) => {
+            handleErrorResponse(error, "Error registering user");
+        },
+    });
 
-    return { registerMuatation, isLoading };
+    return { registerMutation, isLoading };
 };

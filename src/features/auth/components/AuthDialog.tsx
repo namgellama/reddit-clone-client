@@ -1,4 +1,4 @@
-import { useState, type Dispatch, type SetStateAction } from "react";
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 
 import { ArrowLeft } from "lucide-react";
 
@@ -15,6 +15,7 @@ import LoginForm from "./LoginForm";
 import SignUpForm from "./SignUpForm";
 
 import { GoogleLogo } from "@/assets";
+import { EmailOtpProvider, useEmailOtp } from "@/contexts/EmailOtpContext";
 import { BASE_URL } from "@/shared/lib/api";
 
 interface Props {
@@ -23,9 +24,42 @@ interface Props {
 }
 
 const AuthDialog = ({ isOpen, setIsOpen }: Props) => {
-    const [email, setEmail] = useState("");
+    return (
+        <EmailOtpProvider>
+            <AuthDialogContent isOpen={isOpen} setIsOpen={setIsOpen} />
+        </EmailOtpProvider>
+    );
+};
+
+export default AuthDialog;
+
+interface AuthDialogContentProps {
+    isOpen: boolean;
+    setIsOpen: Dispatch<SetStateAction<boolean>>;
+}
+
+const AuthDialogContent = ({ isOpen, setIsOpen }: AuthDialogContentProps) => {
+    const { data, isEmailSet, isOtpSet } = useEmailOtp();
+    console.log("🚀 ~ AuthDialogContent ~ data:", data);
     const [isLogin, setIsLogin] = useState(true);
     const [step, setStep] = useState(1);
+
+    useEffect(() => {
+        if (!isOpen) return;
+
+        if (isOtpSet) {
+            setIsLogin(false);
+            setStep(3);
+        } else if (isEmailSet) {
+            setIsLogin(false);
+            setStep(2);
+        } else {
+            setTimeout(() => {
+                setIsLogin(true);
+                setStep(1);
+            }, 1500);
+        }
+    }, [isOpen, data.email, data.otp, isEmailSet, isOtpSet]);
 
     const title = isLogin
         ? "Log In"
@@ -44,7 +78,7 @@ const AuthDialog = ({ isOpen, setIsOpen }: Props) => {
                 <span className="text-blue-500">Privacy Policy</span>.
             </>
         ) : step === 2 ? (
-            `Enter the 6-digits code sent to ${email}`
+            `Enter the 6-digits code sent to ${data.email}`
         ) : (
             "Reddit is anonymouse, so your username is what you'll go by here. Choose wisely-because once you get a name you can't change it."
         );
@@ -53,8 +87,8 @@ const AuthDialog = ({ isOpen, setIsOpen }: Props) => {
         setIsOpen(open);
 
         if (!open) {
-            setStep(1);
             setIsLogin(true);
+            setStep(1);
         }
     };
 
@@ -124,8 +158,6 @@ const AuthDialog = ({ isOpen, setIsOpen }: Props) => {
                             step={step}
                             setStep={setStep}
                             setIsLogin={setIsLogin}
-                            email={email}
-                            setEmail={setEmail}
                         />
                     )}
                 </div>
@@ -133,5 +165,3 @@ const AuthDialog = ({ isOpen, setIsOpen }: Props) => {
         </Dialog>
     );
 };
-
-export default AuthDialog;
