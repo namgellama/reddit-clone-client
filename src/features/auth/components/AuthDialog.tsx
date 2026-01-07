@@ -58,15 +58,21 @@ const AuthDialog = ({ isOpen, setIsOpen }: Props) => {
         }
     };
 
+    const showBackButton = step > 1;
+    const showLoginWithGoogleButton = isLogin || step == 1;
+
     return (
         <Dialog open={isOpen} onOpenChange={handleOpenChange}>
             <DialogContent className="p-12 min-w-137.5 h-[85vh] rounded-2xl ">
-                <Button
-                    variant="ghost"
-                    className="size-8 rounded-full absolute top-2 left-2"
-                >
-                    <ArrowLeft />
-                </Button>
+                {showBackButton && (
+                    <Button
+                        variant="ghost"
+                        className="size-8 rounded-full absolute top-2 left-2"
+                        onClick={() => setStep((prev) => prev - 1)}
+                    >
+                        <ArrowLeft />
+                    </Button>
+                )}
 
                 <div className="flex flex-col gap-5">
                     <DialogHeader>
@@ -79,7 +85,7 @@ const AuthDialog = ({ isOpen, setIsOpen }: Props) => {
                     </DialogHeader>
 
                     {/* OAuth */}
-                    {(isLogin || step == 1) && (
+                    {showLoginWithGoogleButton && (
                         <>
                             <Button
                                 variant="outline"
