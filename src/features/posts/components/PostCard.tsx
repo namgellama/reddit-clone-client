@@ -1,4 +1,9 @@
+import { ArrowBigDown, ArrowBigUp } from "lucide-react";
+
 import { Avatar, AvatarFallback } from "@/shared/components/ui/avatar";
+import { Button } from "@/shared/components/ui/button";
+
+import { API_URL } from "@/shared/lib/api";
 import { timeAgo } from "@/shared/utils/timeAgo";
 import type { Post } from "../types";
 
@@ -7,6 +12,8 @@ interface Props {
 }
 
 const PostCard = ({ post }: Props) => {
+    const image = post.image ? `${API_URL}${post.image}` : null;
+
     return (
         <div className="space-y-2">
             <div className="flex items-center gap-2">
@@ -25,15 +32,30 @@ const PostCard = ({ post }: Props) => {
             </div>
 
             <h2 className="text-lg font-medium">{post.title}</h2>
-            {post.image ? (
+            {image ? (
                 <img
-                    src={post.image}
+                    src={image}
                     alt={post.title}
                     className="w-full h-128 object-contain bg-black/75 rounded-2xl"
                 />
             ) : (
                 <p className="text-sm text-foreground/85">{post.content}</p>
             )}
+
+            <div>
+                <div className="w-fit bg-gray-300/65 p-1 rounded-full flex items-center gap-2">
+                    <Button
+                        variant="ghost"
+                        className="size-6 hover:text-primary"
+                    >
+                        <ArrowBigUp className="size-[1.15rem]" />
+                    </Button>
+                    {0}
+                    <Button variant="ghost" className="size-6 hover:opacity-70">
+                        <ArrowBigDown className="size-[1.15rem]" />
+                    </Button>
+                </div>
+            </div>
         </div>
     );
 };

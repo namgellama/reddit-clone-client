@@ -3,9 +3,9 @@ import axios, {
     type InternalAxiosRequestConfig,
 } from "axios";
 
-export const BASE_URL = import.meta.env.VITE_PUBLIC_API_URL;
+export const API_URL = import.meta.env.VITE_PUBLIC_API_URL;
 
-const api = axios.create({ baseURL: BASE_URL, withCredentials: true });
+const api = axios.create({ baseURL: API_URL, withCredentials: true });
 
 export default api;
 

@@ -16,7 +16,7 @@ import SignUpForm from "./SignUpForm";
 
 import { GoogleLogo } from "@/assets";
 import { EmailOtpProvider, useEmailOtp } from "@/contexts/EmailOtpContext";
-import { BASE_URL } from "@/shared/lib/api";
+import { API_URL } from "@/shared/lib/api";
 
 interface Props {
     isOpen: boolean;
@@ -40,7 +40,6 @@ interface AuthDialogContentProps {
 
 const AuthDialogContent = ({ isOpen, setIsOpen }: AuthDialogContentProps) => {
     const { data, isEmailSet, isOtpSet } = useEmailOtp();
-    console.log("🚀 ~ AuthDialogContent ~ data:", data);
     const [isLogin, setIsLogin] = useState(true);
     const [step, setStep] = useState(1);
 
@@ -125,7 +124,7 @@ const AuthDialogContent = ({ isOpen, setIsOpen }: AuthDialogContentProps) => {
                                 variant="outline"
                                 className="rounded-2xl w-full relative py-5"
                                 onClick={() =>
-                                    (window.location.href = `${BASE_URL}/api/v1/auth/google`)
+                                    (window.location.href = `${API_URL}/api/v1/auth/google`)
                                 }
                             >
                                 <img
