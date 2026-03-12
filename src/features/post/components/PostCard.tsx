@@ -32,7 +32,7 @@ const PostCard = ({ post }: Props) => {
                 </div>
                 <div className="size-0.75 bg-muted-foreground rounded-full"></div>
                 <p className="text-xs text-muted-foreground">
-                    {timeAgo(post.createdAt)}
+                    {timeAgo(post.date_posted)}
                 </p>
             </div>
 
