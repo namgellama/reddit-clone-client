@@ -1,8 +1,8 @@
 import { useMutation } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 import type { ApiError } from "@/shared/types/api-error";
 import { handleErrorResponse } from "@/shared/utils/handleErrorResponse";
-import toast from "react-hot-toast";
 import authApi from "../api";
 import type { RegisterUserFormFields } from "../validation";
 

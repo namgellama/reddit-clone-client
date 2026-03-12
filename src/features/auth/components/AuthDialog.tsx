@@ -1,7 +1,8 @@
+import { ArrowLeft } from "lucide-react";
 import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 
-import { ArrowLeft } from "lucide-react";
-
+import { GoogleLogo } from "@/assets";
+import { EmailOtpProvider, useEmailOtp } from "@/contexts/EmailOtpContext";
 import { Button } from "@/shared/components/ui/button";
 import {
     Dialog,
@@ -11,12 +12,9 @@ import {
     DialogTitle,
 } from "@/shared/components/ui/dialog";
 import { Separator } from "@/shared/components/ui/separator";
+import { API_URL } from "@/shared/lib/api";
 import LoginForm from "./LoginForm";
 import SignUpForm from "./SignUpForm";
-
-import { GoogleLogo } from "@/assets";
-import { EmailOtpProvider, useEmailOtp } from "@/contexts/EmailOtpContext";
-import { API_URL } from "@/shared/lib/api";
 
 interface Props {
     isOpen: boolean;
@@ -63,10 +61,10 @@ const AuthDialogContent = ({ isOpen, setIsOpen }: AuthDialogContentProps) => {
     const title = isLogin
         ? "Log In"
         : step === 1
-        ? "Sign up"
-        : step === 2
-        ? "Verify your email"
-        : "Create your username and password";
+          ? "Sign up"
+          : step === 2
+            ? "Verify your email"
+            : "Create your username and password";
 
     const description =
         isLogin || step === 1 ? (

@@ -1,5 +1,6 @@
-import { Footer, NavBar, SideBar } from "@/shared/components/user";
 import { Outlet } from "react-router-dom";
+
+import { Footer, NavBar, SideBar } from "@/shared/components/user";
 
 const UserLayout = () => {
     return (

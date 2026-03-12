@@ -1,8 +1,9 @@
+import { Bell, LogOut, SquarePlus } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-import { Bell, LogOut, SquarePlus } from "lucide-react";
-
+import { Logo } from "@/assets";
+import { useAuth } from "@/contexts/AuthContext";
 import { AuthDialog } from "@/features/auth/components";
 import { Avatar, AvatarFallback } from "@/shared/components/ui/avatar";
 import { Badge } from "@/shared/components/ui/badge";
@@ -13,9 +14,6 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/shared/components/ui/dropdown-menu";
-
-import { Logo } from "@/assets";
-import { useAuth } from "@/contexts/AuthContext";
 
 const NavBar = () => {
     const [isOpen, setIsOpen] = useState(false);

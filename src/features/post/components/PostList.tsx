@@ -1,9 +1,8 @@
+import { useGetAllPosts } from "@/features/post/hooks/useGetAllPosts";
 import { ErrorMessage } from "@/shared/components/common";
 import { Separator } from "@/shared/components/ui/separator";
 import { Skeleton } from "@/shared/components/ui/skeleton";
 import PostCard from "./PostCard";
-
-import { useGetAllPosts } from "@/features/post/hooks/useGetAllPosts";
 
 const PostList = () => {
     const postsQuery = useGetAllPosts();

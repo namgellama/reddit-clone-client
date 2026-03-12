@@ -1,7 +1,7 @@
-import type { FieldValues, UseFormReturn } from "react-hook-form";
-import { Form as ShadcnForm } from "../ui/form";
 import type { ReactNode } from "react";
+import type { FieldValues, UseFormReturn } from "react-hook-form";
 
+import { Form as ShadcnForm } from "../ui/form";
 interface Props<T extends FieldValues> {
     form: UseFormReturn<T>;
     onSubmit: (data: any) => void;
