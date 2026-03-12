@@ -13,7 +13,7 @@ export const API_ENDPOINT = {
 
     // User
     user: {
-        getMe: `${BASE_URL}/users/get-me`,
+        getMe: `${BASE_URL}/users/me`,
     },
 
     // Post

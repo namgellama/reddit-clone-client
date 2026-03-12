@@ -1,12 +1,8 @@
-import api from "@/shared/lib/api";
-
 import { API_ENDPOINT } from "@/shared/constants/api.constants";
-
+import api from "@/shared/lib/api";
 import type { Response } from "@/shared/types/response";
 import type { LoginResponse } from "../types/login";
-
 import type {
-    LoginFormFields,
     RegisterEmailFormFields,
     RegisterUserFormFields,
     VerifyEmailFormFields,
@@ -17,7 +13,7 @@ const authApi = {
     registerEmail: async (data: RegisterEmailFormFields) => {
         const response = await api.post<Response<void>>(
             API_ENDPOINT.auth.registerEmail,
-            data
+            data,
         );
         return response.data;
     },
@@ -26,7 +22,7 @@ const authApi = {
     verifyEmail: async (data: VerifyEmailFormFields) => {
         const response = await api.post<Response<void>>(
             API_ENDPOINT.auth.verifyEmail,
-            data
+            data,
         );
         return response.data;
     },
@@ -35,16 +31,16 @@ const authApi = {
     registerUser: async (data: RegisterUserFormFields) => {
         const response = await api.post<Response<void>>(
             API_ENDPOINT.auth.register,
-            data
+            data,
         );
         return response.data;
     },
 
     // Login
-    login: async (data: LoginFormFields) => {
-        const response = await api.post<Response<LoginResponse>>(
+    login: async (data: FormData) => {
+        const response = await api.post<LoginResponse>(
             API_ENDPOINT.auth.login,
-            data
+            data,
         );
         return response.data;
     },
@@ -52,7 +48,7 @@ const authApi = {
     // Logout
     logout: async () => {
         const response = await api.post<Response<void>>(
-            API_ENDPOINT.auth.logout
+            API_ENDPOINT.auth.logout,
         );
         return response.data;
     },
