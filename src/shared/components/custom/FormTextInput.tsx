@@ -1,6 +1,5 @@
-import { useState, type ComponentProps } from "react";
-
 import { Eye, EyeOff } from "lucide-react";
+import { useState, type ComponentProps } from "react";
 import {
     useController,
     type Control,
@@ -19,8 +18,10 @@ import {
 } from "@/shared/components/ui/form";
 import { Input } from "@/shared/components/ui/input";
 
-interface Props<T extends FieldValues>
-    extends Omit<ComponentProps<"input">, "name" | "type"> {
+interface Props<T extends FieldValues> extends Omit<
+    ComponentProps<"input">,
+    "name" | "type"
+> {
     control: Control<T>;
     label: string;
     name: Path<T>;

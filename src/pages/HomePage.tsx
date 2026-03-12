@@ -1,4 +1,4 @@
-import { PostList } from "@/features/posts/components";
+import { PostList } from "@/features/post/components";
 
 const HomePage = () => {
     return (

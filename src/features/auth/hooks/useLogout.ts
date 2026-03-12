@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import type { ApiError } from "@/shared/types/api-error";
-import type { Response } from "@/shared/types/response";
 import { handleErrorResponse } from "@/shared/utils/handleErrorResponse";
 import authApi from "../api";
 
@@ -10,7 +9,7 @@ export const useLogout = () => {
     const queryClient = useQueryClient();
 
     const { mutateAsync: logoutMutation, isPending: isLoading } = useMutation<
-        Response<void>,
+        void,
         ApiError,
         void
     >({

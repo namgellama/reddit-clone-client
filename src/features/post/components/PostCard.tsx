@@ -2,11 +2,10 @@ import { ArrowBigDown, ArrowBigUp } from "lucide-react";
 
 import { Avatar, AvatarFallback } from "@/shared/components/ui/avatar";
 import { Button } from "@/shared/components/ui/button";
-import PostImages from "./PostImages";
-
 import { API_URL } from "@/shared/lib/api";
 import { timeAgo } from "@/shared/utils/timeAgo";
 import type { Post } from "../types";
+import PostImages from "./PostImages";
 
 interface Props {
     post: Post;
@@ -32,7 +31,7 @@ const PostCard = ({ post }: Props) => {
                 </div>
                 <div className="size-0.75 bg-muted-foreground rounded-full"></div>
                 <p className="text-xs text-muted-foreground">
-                    {timeAgo(post.createdAt)}
+                    {timeAgo(post.date_posted)}
                 </p>
             </div>
 

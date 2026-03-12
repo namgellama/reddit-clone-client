@@ -7,29 +7,27 @@ import {
     type ReactNode,
     type SetStateAction,
 } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
+import { useLogin } from "@/features/auth/hooks/useLogin";
+import { useLogout } from "@/features/auth/hooks/useLogout";
+import type { LoginResponse } from "@/features/auth/types/login";
+import type { LoginFormFields } from "@/features/auth/validation";
+import { useGetMe } from "@/features/user/hooks/useGetMe";
+import type { User } from "@/features/user/types";
+import { API_ENDPOINT } from "@/shared/constants/api.constants";
 import api, {
     type AxiosRequestConfigWithRetry,
     type InternalAxiosRequestConfigWithRetry,
 } from "@/shared/lib/api";
 
-import { useLogin } from "@/features/auth/hooks/useLogin";
-import { useLogout } from "@/features/auth/hooks/useLogout";
-import { useGetMe } from "@/features/user/hooks/useGetMe";
-
-import type { LoginResponse } from "@/features/auth/types/login";
-import type { LoginFormFields } from "@/features/auth/validation";
-import type { User } from "@/features/user/types";
-import type { Response } from "@/shared/types/response";
-
-import { API_ENDPOINT } from "@/shared/constants/api.constants";
-
 interface AuthContextType {
     isLoading: boolean;
     user: User | null;
-    isAuthenticated: boolean;
     setUser: Dispatch<SetStateAction<User | null>>;
+    token: string | null;
+    setToken: Dispatch<SetStateAction<string | null>>;
+    isAuthenticated: boolean;
     login: (data: LoginFormFields) => Promise<void>;
     logout: () => Promise<void>;
 }
@@ -41,9 +39,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<User | null>(
         localStorage.getItem("user")
             ? JSON.parse(localStorage.getItem("user")!)
-            : null
+            : null,
     );
-    5;
     const [isLoading, setIsLoading] = useState(false);
 
     const isAuthenticated = !!user;
@@ -52,30 +49,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const { logoutMutation } = useLogout();
     const { currentUser, isLoading: isCurrentUserLoading } = useGetMe(!!token);
 
-    const [searchParams, setSearchParams] = useSearchParams();
     const navigate = useNavigate();
-
-    // Set token from URL query param (after OAuth redirect)
-    useEffect(() => {
-        if (searchParams.get("accessToken")) {
-            const accessToken = searchParams.get("accessToken")!;
-            setToken(accessToken);
-            setSearchParams({});
-        }
-    }, []);
 
     // Bootstrap authentication when the app loads
     useEffect(() => {
         const bootstrapAuth = async () => {
             setIsLoading(true);
             try {
-                const response = await api.post<Response<LoginResponse>>(
+                const response = await api.post<LoginResponse>(
                     API_ENDPOINT.auth.refreshToken,
                     null,
-                    { withCredentials: true }
+                    { withCredentials: true },
                 );
 
-                setToken(response.data.data.accessToken);
+                setToken(response.data.access_token);
             } catch {
                 setToken(null);
                 setUser(null);
@@ -104,7 +91,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 }
 
                 return config;
-            }
+            },
         );
 
         return () => api.interceptors.request.eject(authInterceptor);
@@ -120,7 +107,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
                 if (
                     originalRequest.url?.includes(
-                        API_ENDPOINT.auth.refreshToken
+                        API_ENDPOINT.auth.refreshToken,
                     )
                 ) {
                     return Promise.reject(error);
@@ -130,10 +117,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                     originalRequest._retry = true;
 
                     try {
-                        const response = await api.post<
-                            Response<LoginResponse>
-                        >(API_ENDPOINT.auth.refreshToken);
-                        const accessToken = response.data.data.accessToken;
+                        const response = await api.post<LoginResponse>(
+                            API_ENDPOINT.auth.refreshToken,
+                        );
+                        const accessToken = response.data.access_token;
                         setToken(accessToken);
 
                         originalRequest.headers!.Authorization = `Bearer ${accessToken}`;
@@ -146,15 +133,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 }
 
                 return Promise.reject(error);
-            }
+            },
         );
 
         return () => api.interceptors.response.eject(refreshInterceptor);
     }, []);
 
     const login = async (data: LoginFormFields) => {
-        const response = await loginMutation(data);
-        setToken(response.data.accessToken);
+        const formData = new FormData();
+        formData.append("username", data.email);
+        formData.append("password", data.password);
+
+        const res = await loginMutation(formData);
+        setToken(res.access_token);
         setIsLoading(false);
     };
 
@@ -172,6 +163,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 isLoading: isLoading || isCurrentUserLoading,
                 user,
                 setUser,
+                token,
+                setToken,
                 isAuthenticated,
                 login,
                 logout,
