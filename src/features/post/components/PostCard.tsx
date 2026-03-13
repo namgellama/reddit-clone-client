@@ -2,7 +2,6 @@ import { ArrowBigDown, ArrowBigUp } from "lucide-react";
 
 import { Avatar, AvatarFallback } from "@/shared/components/ui/avatar";
 import { Button } from "@/shared/components/ui/button";
-import { API_URL } from "@/shared/lib/api";
 import { timeAgo } from "@/shared/utils/timeAgo";
 import type { Post } from "../types";
 import PostImages from "./PostImages";
@@ -12,12 +11,6 @@ interface Props {
 }
 
 const PostCard = ({ post }: Props) => {
-    const images: string[] = [];
-
-    for (const image of post.images) {
-        images.push(`${API_URL}${image}`);
-    }
-
     return (
         <div className="space-y-2">
             <div className="flex items-center gap-2">
@@ -36,8 +29,8 @@ const PostCard = ({ post }: Props) => {
             </div>
 
             <h2 className="text-lg font-medium">{post.title}</h2>
-            {images.length ? (
-                <PostImages images={images} />
+            {post.images.length ? (
+                <PostImages images={post.images} />
             ) : (
                 <p className="text-sm text-foreground/85">{post.content}</p>
             )}

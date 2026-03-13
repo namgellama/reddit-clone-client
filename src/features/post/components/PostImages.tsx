@@ -6,25 +6,30 @@ import {
     CarouselNext,
     CarouselPrevious,
 } from "@/shared/components/ui/carousel";
+import { parseImage } from "@/shared/utils/parseImage";
 
 const PostImages = ({ images }: { images: string[] }) => {
     if (images.length > 1)
         return (
             <Carousel className="w-full h-128">
                 <CarouselContent>
-                    {images.map((image) => (
-                        <CarouselItem key={image}>
-                            <Card>
-                                <CardContent className="">
-                                    <img
-                                        src={image}
-                                        alt={`Image ${image}`}
-                                        className="w-full h-128 object-contain bg-black/75 rounded-2xl"
-                                    />
-                                </CardContent>
-                            </Card>
-                        </CarouselItem>
-                    ))}
+                    {images.map((image) => {
+                        const imagePath = parseImage(image);
+
+                        return (
+                            <CarouselItem key={image}>
+                                <Card>
+                                    <CardContent className="">
+                                        <img
+                                            src={imagePath}
+                                            alt={`Image ${image}`}
+                                            className="w-full h-128 object-contain bg-black/75 rounded-2xl"
+                                        />
+                                    </CardContent>
+                                </Card>
+                            </CarouselItem>
+                        );
+                    })}
                 </CarouselContent>
                 <CarouselPrevious />
                 <CarouselNext />
@@ -33,7 +38,7 @@ const PostImages = ({ images }: { images: string[] }) => {
 
     return (
         <img
-            src={images[0]}
+            src={parseImage(images[0])}
             alt={`Image ${images[0]}`}
             className="w-full h-128 object-contain bg-black/75 rounded-2xl"
         />
