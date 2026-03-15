@@ -6,7 +6,7 @@ import type { Post } from "../types";
 
 // Get all posts
 export const useGetAllPosts = () => {
-    const postsQuery = useQuery<Post[], ApiError>({
+    const postsQuery = useQuery<Post[], ApiError, void>({
         queryKey: ["posts"],
         queryFn: postApi.getAllPosts,
     });
