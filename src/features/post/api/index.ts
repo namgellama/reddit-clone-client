@@ -8,6 +8,12 @@ const postApi = {
         const response = await api.get<Post[]>(API_ENDPOINT.post.getAll);
         return response.data;
     },
+
+    // Create post
+    createPost: async (data: FormData) => {
+        const response = await api.post(API_ENDPOINT.post.create, data);
+        return response.data;
+    },
 };
 
 export default postApi;

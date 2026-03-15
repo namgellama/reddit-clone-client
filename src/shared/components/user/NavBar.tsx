@@ -1,6 +1,6 @@
 import { Bell, LogOut, SquarePlus } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { Logo } from "@/assets";
 import { useAuth } from "@/contexts/AuthContext";
@@ -17,6 +17,8 @@ import {
 
 const NavBar = () => {
     const [isOpen, setIsOpen] = useState(false);
+
+    const navigate = useNavigate();
 
     const { isAuthenticated, user, logout } = useAuth();
 
@@ -42,6 +44,7 @@ const NavBar = () => {
                     <Button
                         variant="ghost"
                         className="rounded-2xl flex items-center"
+                        onClick={() => navigate("/posts/create")}
                     >
                         <SquarePlus className="mt-0.5" /> Create
                     </Button>

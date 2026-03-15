@@ -19,5 +19,6 @@ export const API_ENDPOINT = {
     // Post
     post: {
         getAll: `${BASE_URL}/posts`,
+        create: `${BASE_URL}/posts`,
     },
 };
