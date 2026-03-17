@@ -1,10 +1,4 @@
-interface Count {
-    comment: number;
-    upvote: number;
-    downvote: number;
-}
-
-interface Author {
+interface User {
     id: string;
     username: string;
     email: string;
@@ -16,7 +10,8 @@ export interface Post {
     content: string;
     images: string[];
     date_posted: Date;
-    user_id: string;
-    author: Author;
-    count: Count;
+    user: User;
+    score: number;
+    user_vote: "UPVOTE" | "DOWNVOTE" | null;
+    comment_count: 0;
 }
