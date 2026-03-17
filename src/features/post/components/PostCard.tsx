@@ -1,4 +1,4 @@
-import { ArrowBigDown, ArrowBigUp } from "lucide-react";
+import { ArrowBigDown, ArrowBigUp, MessageCircle } from "lucide-react";
 
 import { Avatar, AvatarFallback } from "@/shared/components/ui/avatar";
 import { Button } from "@/shared/components/ui/button";
@@ -35,19 +35,26 @@ const PostCard = ({ post }: Props) => {
                 <p className="text-sm text-foreground/85">{post.content}</p>
             )}
 
-            <div>
-                <div className="w-fit bg-gray-300/65 p-1 rounded-full flex items-center gap-2">
+            <div className="flex items-center gap-3">
+                <div className="w-fit h-8 bg-gray-300/65 p-1 rounded-full flex items-center gap-2">
                     <Button
                         variant="ghost"
                         className="size-6 hover:text-primary"
                     >
                         <ArrowBigUp className="size-[1.15rem]" />
                     </Button>
-                    {0}
-                    <Button variant="ghost" className="size-6 hover:opacity-70">
+                    {post.score}
+                    <Button
+                        variant="ghost"
+                        className="size-6 hover:text-purple-500"
+                    >
                         <ArrowBigDown className="size-[1.15rem]" />
                     </Button>
                 </div>
+                <Button className="w-fit h-8 bg-gray-300/65 rounded-full flex items-center gap-2  text-black hover:bg-gray-300/80">
+                    <MessageCircle className="size-4" />
+                    {post.comment_count}
+                </Button>
             </div>
         </div>
     );
