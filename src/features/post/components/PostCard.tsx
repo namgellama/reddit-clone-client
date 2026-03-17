@@ -5,12 +5,16 @@ import { Button } from "@/shared/components/ui/button";
 import { timeAgo } from "@/shared/utils/timeAgo";
 import type { Post } from "../types";
 import PostImages from "./PostImages";
+import { useTogglePostVote } from "@/features/vote/hooks/useTogglePostVote";
 
 interface Props {
     post: Post;
 }
 
 const PostCard = ({ post }: Props) => {
+    console.log("🚀 ~ PostCard ~ post:", post);
+    const { togglePostVoteMutation, isLoading } = useTogglePostVote(post.id);
+
     return (
         <div className="space-y-2">
             <div className="flex items-center gap-2">
@@ -36,19 +40,41 @@ const PostCard = ({ post }: Props) => {
             )}
 
             <div className="flex items-center gap-3">
-                <div className="w-fit h-8 bg-gray-300/65 p-1 rounded-full flex items-center gap-2">
+                <div
+                    className={`w-fit h-8 p-1 ${post.user_vote === "UPVOTE" ? "bg-primary text-white" : post.user_vote === "DOWNVOTE" ? "bg-secondary" : "bg-gray-300/65"} rounded-full flex items-center justify-center gap-2`}
+                >
                     <Button
                         variant="ghost"
-                        className="size-6 hover:text-primary"
+                        className={`size-6 hover:text-primary hover:bg-inherit`}
+                        onClick={() =>
+                            togglePostVoteMutation({ type: "UPVOTE" })
+                        }
                     >
-                        <ArrowBigUp className="size-[1.15rem]" />
+                        {
+                            <ArrowBigUp
+                                className="size-[1.15rem]"
+                                fill={
+                                    post.user_vote === "UPVOTE"
+                                        ? "white"
+                                        : "none"
+                                }
+                            />
+                        }
                     </Button>
                     {post.score}
                     <Button
                         variant="ghost"
-                        className="size-6 hover:text-purple-500"
+                        className="size-6 hover:text-secondary hover:bg-inherit"
+                        onClick={() =>
+                            togglePostVoteMutation({ type: "DOWNVOTE" })
+                        }
                     >
-                        <ArrowBigDown className="size-[1.15rem]" />
+                        <ArrowBigDown
+                            className="size-[1.15rem]"
+                            fill={
+                                post.user_vote === "DOWNVOTE" ? "white" : "none"
+                            }
+                        />
                     </Button>
                 </div>
                 <Button className="w-fit h-8 bg-gray-300/65 rounded-full flex items-center gap-2  text-black hover:bg-gray-300/80">

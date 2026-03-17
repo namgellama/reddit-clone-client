@@ -1,3 +1,5 @@
+import type { VoteType } from "@/features/vote/types";
+
 interface User {
     id: string;
     username: string;
@@ -12,6 +14,6 @@ export interface Post {
     date_posted: Date;
     user: User;
     score: number;
-    user_vote: "UPVOTE" | "DOWNVOTE" | null;
+    user_vote: VoteType | null;
     comment_count: 0;
 }
