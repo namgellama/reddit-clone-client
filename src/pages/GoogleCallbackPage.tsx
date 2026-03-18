@@ -8,7 +8,7 @@ const GoogleCallbackPage = () => {
     const [searchParams, _] = useSearchParams();
     const navigate = useNavigate();
 
-    const { setToken, user, token } = useAuth();
+    const { user, getCurrentUser } = useAuth();
 
     const accessToken = searchParams.get("access_token");
 
@@ -16,12 +16,12 @@ const GoogleCallbackPage = () => {
     useEffect(() => {
         if (!accessToken) return;
 
-        setToken(accessToken);
+        getCurrentUser();
     }, [accessToken]);
 
     useEffect(() => {
-        if (user && token) navigate("/", { replace: true });
-    }, [user, token, navigate]);
+        if (user) navigate("/", { replace: true });
+    }, [user, navigate]);
 
     return (
         <div className="w-full h-screen flex items-center justify-center">
