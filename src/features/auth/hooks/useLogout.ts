@@ -1,5 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
+import { postCache } from "@/features/post/constants";
+import type { Post } from "@/features/post/types";
 import type { ApiError } from "@/shared/types/api-error";
 import { handleErrorResponse } from "@/shared/utils/handleErrorResponse";
 import authApi from "../api";
@@ -14,8 +16,10 @@ export const useLogout = () => {
         void
     >({
         mutationFn: authApi.logout,
-        onSuccess: () => {
-            queryClient.clear();
+        onSuccess: async () => {
+            queryClient.setQueryData(postCache.all, (oldPosts: Post[]) =>
+                oldPosts?.map((post) => ({ ...post, user_vote: null })),
+            );
         },
         onError: (error) => {
             handleErrorResponse(error, "Error logging out");
