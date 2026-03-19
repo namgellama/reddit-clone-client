@@ -12,7 +12,6 @@ interface Props {
 }
 
 const PostCard = ({ post }: Props) => {
-    console.log("🚀 ~ PostCard ~ post:", post);
     const { togglePostVoteMutation, isLoading } = useTogglePostVote(post.id);
 
     return (
@@ -41,11 +40,12 @@ const PostCard = ({ post }: Props) => {
 
             <div className="flex items-center gap-3">
                 <div
-                    className={`w-fit h-8 p-1 ${post.user_vote === "UPVOTE" ? "bg-primary text-white" : post.user_vote === "DOWNVOTE" ? "bg-secondary" : "bg-gray-300/65"} rounded-full flex items-center justify-center gap-2`}
+                    className={`w-fit h-8 p-1 ${post.user_vote === "UPVOTE" ? "bg-primary text-white" : post.user_vote === "DOWNVOTE" ? "bg-secondary text-white" : "bg-gray-300/65 text-black"} rounded-full flex items-center justify-center gap-2`}
                 >
                     <Button
+                        disabled={isLoading}
                         variant="ghost"
-                        className={`size-6 hover:text-primary hover:bg-inherit`}
+                        className={`size-6 p-0 hover:bg-inherit ${post.user_vote !== null ? "hover:text-white" : "hover:text-primary"}`}
                         onClick={() =>
                             togglePostVoteMutation({ type: "UPVOTE" })
                         }
@@ -63,14 +63,15 @@ const PostCard = ({ post }: Props) => {
                     </Button>
                     {post.score}
                     <Button
+                        disabled={isLoading}
                         variant="ghost"
-                        className="size-6 hover:text-secondary hover:bg-inherit"
+                        className={`size-6 p-0 hover:bg-inherit ${post.user_vote !== null ? "hover:text-white" : "hover:text-secondary"}`}
                         onClick={() =>
                             togglePostVoteMutation({ type: "DOWNVOTE" })
                         }
                     >
                         <ArrowBigDown
-                            className="size-[1.15rem]"
+                            className="size-[1.15rem] "
                             fill={
                                 post.user_vote === "DOWNVOTE" ? "white" : "none"
                             }

@@ -4,6 +4,8 @@ import type { ApiError } from "@/shared/types/api-error";
 import { handleErrorResponse } from "@/shared/utils/handleErrorResponse";
 import voteApi from "../api";
 import type { VoteRequest, VoteResponse } from "../types";
+import type { Post } from "@/features/post/types";
+import { postCache } from "@/features/post/constants";
 
 export const useTogglePostVote = (postId: string) => {
     const queryClient = useQueryClient();
@@ -12,8 +14,20 @@ export const useTogglePostVote = (postId: string) => {
         useMutation<VoteResponse, ApiError, VoteRequest>({
             mutationFn: (data: VoteRequest) =>
                 voteApi.togglePostVote(postId, data),
-            onSuccess: () => {
-                queryClient.invalidateQueries({ queryKey: ["posts", postId] });
+            onSuccess: (updatedVote) => {
+                queryClient.setQueryData(postCache.all, (oldData: Post[]) => {
+                    if (!oldData) return oldData;
+
+                    return oldData.map((post) =>
+                        post.id === postId
+                            ? {
+                                  ...post,
+                                  score: updatedVote.score,
+                                  user_vote: updatedVote.vote_type,
+                              }
+                            : post,
+                    );
+                });
             },
             onError: (error) =>
                 handleErrorResponse(error, "Error toggling post vote"),
