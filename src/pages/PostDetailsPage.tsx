@@ -1,13 +1,13 @@
 import { useParams } from "react-router-dom";
 
 import { useGetPostById } from "@/features/post/hooks/useGetPostById";
+import { ErrorMessage } from "@/shared/components/common";
 import {
-    ErrorMessage,
     PostCardContent,
     PostCardFooter,
     PostCardHeader,
     PostSkeleton,
-} from "@/shared/components/common";
+} from "@/features/post/components";
 
 const PostDetailsPage = () => {
     const { id } = useParams();

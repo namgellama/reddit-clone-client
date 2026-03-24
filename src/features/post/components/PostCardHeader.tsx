@@ -1,6 +1,6 @@
 import type { Post } from "@/features/post/types";
 import { timeAgo } from "@/shared/utils/timeAgo";
-import { Avatar, AvatarFallback } from "../ui/avatar";
+import { Avatar, AvatarFallback } from "../../../shared/components/ui/avatar";
 
 const PostCardHeader = ({ post }: { post: Post }) => {
     return (

@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import type { Post } from "@/features/post/types";
 import { useTogglePostVote } from "@/features/vote/hooks/useTogglePostVote";
-import CommentButton from "./CommentButton";
-import VoteControls from "./VoteControls";
+import CommentButton from "../../../shared/components/common/CommentButton";
+import VoteControls from "../../../shared/components/common/VoteControls";
 
 const PostCardFooter = ({ post }: { post: Post }) => {
     const { isAuthenticated } = useAuth();

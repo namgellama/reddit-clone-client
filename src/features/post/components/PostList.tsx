@@ -1,7 +1,8 @@
 import { useGetAllPosts } from "@/features/post/hooks/useGetAllPosts";
-import { ErrorMessage, PostSkeleton } from "@/shared/components/common";
+import { ErrorMessage } from "@/shared/components/common";
 import { Separator } from "@/shared/components/ui/separator";
 import PostCard from "./PostCard";
+import PostSkeleton from "./PostSkeleton";
 
 const PostList = () => {
     const { posts, isLoading, error } = useGetAllPosts();

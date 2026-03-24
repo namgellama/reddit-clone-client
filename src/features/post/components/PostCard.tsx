@@ -1,11 +1,9 @@
 import { useNavigate } from "react-router-dom";
 
-import {
-    PostCardContent,
-    PostCardFooter,
-    PostCardHeader,
-} from "@/shared/components/common";
 import type { Post } from "../types";
+import PostCardHeader from "./PostCardHeader";
+import PostCardContent from "./PostCardContent";
+import PostCardFooter from "./PostCardFooter";
 
 const PostCard = ({ post }: { post: Post }) => {
     const navigate = useNavigate();

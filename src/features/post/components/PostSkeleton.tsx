@@ -1,4 +1,4 @@
-import { Skeleton } from "../ui/skeleton";
+import { Skeleton } from "../../../shared/components/ui/skeleton";
 
 const PostSkeleton = ({ isList }: { isList: boolean }) => {
     return (
