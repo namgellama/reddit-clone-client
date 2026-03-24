@@ -18,10 +18,14 @@ const PostCardFooter = ({ post }: { post: Post }) => {
                 disabled={isLoading || !isAuthenticated}
                 score={post.score}
                 userVote={post.user_vote}
-                upvoteOnClick={() => togglePostVoteMutation({ type: "UPVOTE" })}
-                downvoteOnClick={() =>
-                    togglePostVoteMutation({ type: "DOWNVOTE" })
-                }
+                upvoteOnClick={(e) => {
+                    e.stopPropagation();
+                    togglePostVoteMutation({ type: "UPVOTE" });
+                }}
+                downvoteOnClick={(e) => {
+                    e.stopPropagation();
+                    togglePostVoteMutation({ type: "DOWNVOTE" });
+                }}
             />
 
             <CommentButton

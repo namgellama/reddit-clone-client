@@ -6,8 +6,8 @@ interface Props {
     disabled: boolean;
     score: number;
     userVote: "UPVOTE" | "DOWNVOTE" | null;
-    upvoteOnClick: () => void;
-    downvoteOnClick: () => void;
+    upvoteOnClick: (e: React.MouseEvent) => void;
+    downvoteOnClick: (e: React.MouseEvent) => void;
 }
 
 const VoteControls = ({
