@@ -7,10 +7,14 @@ import type { Post } from "../types";
 
 // Get all posts
 export const useGetAllPosts = () => {
-    const postsQuery = useQuery<Post[], ApiError>({
+    const {
+        data: posts,
+        isLoading,
+        error,
+    } = useQuery<Post[], ApiError>({
         queryKey: postCache.all,
-        queryFn: postApi.getAllPosts,
+        queryFn: postApi.getAll,
     });
 
-    return postsQuery;
+    return { posts, isLoading, error };
 };

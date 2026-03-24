@@ -19,6 +19,7 @@ export const API_ENDPOINT = {
     // Post
     post: {
         getAll: `${BASE_URL}/posts`,
+        getById: (id: string) => `${BASE_URL}/posts/${id}`,
         create: `${BASE_URL}/posts`,
         vote: (post_id: string) => `${BASE_URL}/posts/${post_id}/votes`,
     },

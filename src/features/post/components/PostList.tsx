@@ -1,25 +1,38 @@
 import { useGetAllPosts } from "@/features/post/hooks/useGetAllPosts";
 import { ErrorMessage } from "@/shared/components/common";
 import { Separator } from "@/shared/components/ui/separator";
-import { Skeleton } from "@/shared/components/ui/skeleton";
 import PostCard from "./PostCard";
+import PostSkeleton from "./PostSkeleton";
 
 const PostList = () => {
-    const postsQuery = useGetAllPosts();
+    const { posts, isLoading, error } = useGetAllPosts();
 
-    if (postsQuery.isLoading) return <Skeleton />;
+    if (isLoading)
+        return (
+            <div className="space-y-4">
+                {Array.from({ length: 5 }).map((_, index) => (
+                    <PostSkeleton key={index} isList={true} />
+                ))}
+            </div>
+        );
 
-    if (postsQuery.error)
-        return <ErrorMessage message="Error fetching posts" />;
+    if (error)
+        return (
+            <ErrorMessage
+                message={
+                    error?.response?.data?.message ?? "Error fetching posts"
+                }
+            />
+        );
 
-    if (!postsQuery.data || postsQuery.data.length === 0)
+    if (!posts || posts.length === 0)
         return <p className="text-muted-foreground">No posts yet</p>;
 
     return (
         <>
-            {postsQuery.data.map((post) => (
+            {posts.map((post) => (
                 <div key={post.id}>
-                    <PostCard post={post} />
+                    <PostCard post={post} isList={true} />
                     <Separator className="my-2" />
                 </div>
             ))}

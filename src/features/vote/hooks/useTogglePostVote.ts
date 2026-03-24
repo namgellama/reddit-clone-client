@@ -15,6 +15,7 @@ export const useTogglePostVote = (postId: string) => {
             mutationFn: (data: VoteRequest) =>
                 voteApi.togglePostVote(postId, data),
             onSuccess: (updatedVote) => {
+                // Update post list cache
                 queryClient.setQueryData(postCache.all, (oldData: Post[]) => {
                     if (!oldData) return oldData;
 
@@ -28,6 +29,20 @@ export const useTogglePostVote = (postId: string) => {
                             : post,
                     );
                 });
+
+                // Update post details cache
+                queryClient.setQueryData(
+                    [...postCache.details(postId)],
+                    (oldPost: Post) => {
+                        if (!oldPost) return oldPost;
+
+                        return {
+                            ...oldPost,
+                            score: updatedVote.score,
+                            user_vote: updatedVote.vote_type,
+                        };
+                    },
+                );
             },
             onError: (error) =>
                 handleErrorResponse(error, "Error toggling post vote"),
