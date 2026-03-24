@@ -1,13 +1,9 @@
 import { useParams } from "react-router-dom";
 
+import { PostSkeleton } from "@/features/post/components";
+import PostCard from "@/features/post/components/PostCard";
 import { useGetPostById } from "@/features/post/hooks/useGetPostById";
 import { ErrorMessage } from "@/shared/components/common";
-import {
-    PostCardContent,
-    PostCardFooter,
-    PostCardHeader,
-    PostSkeleton,
-} from "@/features/post/components";
 
 const PostDetailsPage = () => {
     const { id } = useParams();
@@ -23,14 +19,7 @@ const PostDetailsPage = () => {
             />
         );
 
-    if (post)
-        return (
-            <div className="space-y-2">
-                <PostCardHeader post={post} />
-                <PostCardContent post={post} />
-                <PostCardFooter post={post} />
-            </div>
-        );
+    if (post) return <PostCard post={post} isList={false} />;
 
     return null;
 };

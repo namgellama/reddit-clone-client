@@ -32,7 +32,7 @@ const PostList = () => {
         <>
             {posts.map((post) => (
                 <div key={post.id}>
-                    <PostCard post={post} />
+                    <PostCard post={post} isList={true} />
                     <Separator className="my-2" />
                 </div>
             ))}
