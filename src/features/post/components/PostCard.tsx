@@ -1,17 +1,19 @@
 import { ArrowBigDown, ArrowBigUp, MessageCircle } from "lucide-react";
 
+import { useAuth } from "@/contexts/AuthContext";
+import { useTogglePostVote } from "@/features/vote/hooks/useTogglePostVote";
 import { Avatar, AvatarFallback } from "@/shared/components/ui/avatar";
 import { Button } from "@/shared/components/ui/button";
 import { timeAgo } from "@/shared/utils/timeAgo";
 import type { Post } from "../types";
 import PostImages from "./PostImages";
-import { useTogglePostVote } from "@/features/vote/hooks/useTogglePostVote";
 
 interface Props {
     post: Post;
 }
 
 const PostCard = ({ post }: Props) => {
+    const { isAuthenticated } = useAuth();
     const { togglePostVoteMutation, isLoading } = useTogglePostVote(post.id);
 
     return (
@@ -43,7 +45,7 @@ const PostCard = ({ post }: Props) => {
                     className={`w-fit h-8 p-1 ${post.user_vote === "UPVOTE" ? "bg-primary text-white" : post.user_vote === "DOWNVOTE" ? "bg-secondary text-white" : "bg-gray-300/65 text-black"} rounded-full flex items-center justify-center gap-2`}
                 >
                     <Button
-                        disabled={isLoading}
+                        disabled={isLoading || !isAuthenticated}
                         variant="ghost"
                         className={`size-6 p-0 hover:bg-inherit ${post.user_vote !== null ? "hover:text-white" : "hover:text-primary"}`}
                         onClick={() =>
@@ -63,7 +65,7 @@ const PostCard = ({ post }: Props) => {
                     </Button>
                     {post.score}
                     <Button
-                        disabled={isLoading}
+                        disabled={isLoading || !isAuthenticated}
                         variant="ghost"
                         className={`size-6 p-0 hover:bg-inherit ${post.user_vote !== null ? "hover:text-white" : "hover:text-secondary"}`}
                         onClick={() =>
