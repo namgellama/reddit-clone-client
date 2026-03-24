@@ -8,6 +8,12 @@ const postApi = {
         return response.data;
     },
 
+    // Get post by id
+    getPostById: async (id: string) => {
+        const response = await api.get(API_ENDPOINT.post.getById(id));
+        return response.data;
+    },
+
     // Create post
     createPost: async (data: FormData) => {
         const response = await api.post(API_ENDPOINT.post.create, data);
