@@ -3,19 +3,19 @@ import api from "@/shared/lib/api";
 
 const postApi = {
     // Get all posts
-    getAllPosts: async () => {
+    getAll: async () => {
         const response = await api.get(API_ENDPOINT.post.getAll);
         return response.data;
     },
 
     // Get post by id
-    getPostById: async (id: string) => {
+    getById: async (id: string) => {
         const response = await api.get(API_ENDPOINT.post.getById(id));
         return response.data;
     },
 
     // Create post
-    createPost: async (data: FormData) => {
+    create: async (data: FormData) => {
         const response = await api.post(API_ENDPOINT.post.create, data);
         return response.data;
     },

@@ -5,19 +5,25 @@ import { Skeleton } from "@/shared/components/ui/skeleton";
 import PostCard from "./PostCard";
 
 const PostList = () => {
-    const postsQuery = useGetAllPosts();
+    const { posts, isLoading, error } = useGetAllPosts();
 
-    if (postsQuery.isLoading) return <Skeleton />;
+    if (isLoading) return <Skeleton />;
 
-    if (postsQuery.error)
-        return <ErrorMessage message="Error fetching posts" />;
+    if (error)
+        return (
+            <ErrorMessage
+                message={
+                    error?.response?.data?.message ?? "Error fetching posts"
+                }
+            />
+        );
 
-    if (!postsQuery.data || postsQuery.data.length === 0)
+    if (!posts || posts.length === 0)
         return <p className="text-muted-foreground">No posts yet</p>;
 
     return (
         <>
-            {postsQuery.data.map((post) => (
+            {posts.map((post) => (
                 <div key={post.id}>
                     <PostCard post={post} />
                     <Separator className="my-2" />

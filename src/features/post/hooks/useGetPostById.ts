@@ -13,7 +13,7 @@ export const useGetPostById = (id: string | undefined) => {
         error,
     } = useQuery<Post, ApiError>({
         queryKey: postCache.details(id!),
-        queryFn: () => postApi.getPostById(id!),
+        queryFn: () => postApi.getById(id!),
         enabled: !!id,
     });
 

@@ -9,7 +9,7 @@ import type { Post } from "../types";
 export const useCreatePost = () => {
     const { mutateAsync: createPostMutation, isPending: isLoading } =
         useMutation<Omit<Post, "count">, ApiError, FormData>({
-            mutationFn: postApi.createPost,
+            mutationFn: postApi.create,
             onError: (error) => {
                 handleErrorResponse(error, "Error creating post");
             },
