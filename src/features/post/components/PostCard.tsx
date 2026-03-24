@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import {
     PostCardContent,
     PostCardFooter,
@@ -6,8 +8,14 @@ import {
 import type { Post } from "../types";
 
 const PostCard = ({ post }: { post: Post }) => {
+    const navigate = useNavigate();
+
+    const handleNavigate = () => {
+        navigate(`/posts/${post.id}`);
+    };
+
     return (
-        <div className="space-y-2">
+        <div className="space-y-2 cursor-pointer" onClick={handleNavigate}>
             <PostCardHeader post={post} />
             <PostCardContent post={post} />
             <PostCardFooter post={post} />

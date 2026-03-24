@@ -1,13 +1,19 @@
 import { useGetAllPosts } from "@/features/post/hooks/useGetAllPosts";
-import { ErrorMessage } from "@/shared/components/common";
+import { ErrorMessage, PostSkeleton } from "@/shared/components/common";
 import { Separator } from "@/shared/components/ui/separator";
-import { Skeleton } from "@/shared/components/ui/skeleton";
 import PostCard from "./PostCard";
 
 const PostList = () => {
     const { posts, isLoading, error } = useGetAllPosts();
 
-    if (isLoading) return <Skeleton />;
+    if (isLoading)
+        return (
+            <div className="space-y-4">
+                {Array.from({ length: 5 }).map((_, index) => (
+                    <PostSkeleton key={index} isList={true} />
+                ))}
+            </div>
+        );
 
     if (error)
         return (

@@ -6,15 +6,15 @@ import {
     PostCardContent,
     PostCardFooter,
     PostCardHeader,
+    PostSkeleton,
 } from "@/shared/components/common";
-import { Skeleton } from "@/shared/components/ui/skeleton";
 
 const PostDetailsPage = () => {
     const { id } = useParams();
 
     const { post, isLoading, error } = useGetPostById(id);
 
-    if (isLoading) return <Skeleton />;
+    if (isLoading) return <PostSkeleton isList={false} />;
 
     if (error)
         return (
