@@ -1,11 +1,9 @@
-import { useAuth } from "@/contexts/AuthContext";
-import { useTogglePostVote } from "@/features/vote/hooks/useTogglePostVote";
-import { VoteControls } from "@/shared/components/common";
-import CommentButton from "@/shared/components/common/CommentButton";
-import { Avatar, AvatarFallback } from "@/shared/components/ui/avatar";
-import { timeAgo } from "@/shared/utils/timeAgo";
+import {
+    PostCardContent,
+    PostCardFooter,
+    PostCardHeader,
+} from "@/shared/components/common";
 import type { Post } from "../types";
-import PostImages from "./PostImages";
 
 const PostCard = ({ post }: { post: Post }) => {
     return (
@@ -18,57 +16,3 @@ const PostCard = ({ post }: { post: Post }) => {
 };
 
 export default PostCard;
-
-const PostCardHeader = ({ post }: { post: Post }) => {
-    return (
-        <div className="flex items-center gap-2">
-            <div className="flex items-center gap-2">
-                <Avatar className="size-6">
-                    <AvatarFallback className="bg-gray-500 text-background uppercase text-xs">
-                        G
-                    </AvatarFallback>
-                </Avatar>
-                <span className="text-xs font-medium">r/golang</span>
-            </div>
-            <div className="size-0.75 bg-muted-foreground rounded-full"></div>
-            <p className="text-xs text-muted-foreground">
-                {timeAgo(post.date_posted)}
-            </p>
-        </div>
-    );
-};
-
-const PostCardContent = ({ post }: { post: Post }) => {
-    return (
-        <>
-            <h2 className="text-lg font-medium">{post.title}</h2>
-            {post.images.length ? (
-                <PostImages images={post.images} />
-            ) : (
-                <p className="text-sm text-foreground/85">{post.content}</p>
-            )}
-        </>
-    );
-};
-
-const PostCardFooter = ({ post }: { post: Post }) => {
-    const { isAuthenticated } = useAuth();
-
-    const { togglePostVoteMutation, isLoading } = useTogglePostVote(post.id);
-
-    return (
-        <div className="flex items-center gap-3">
-            <VoteControls
-                disabled={isLoading || !isAuthenticated}
-                score={post.score}
-                userVote={post.user_vote}
-                upvoteOnClick={() => togglePostVoteMutation({ type: "UPVOTE" })}
-                downvoteOnClick={() =>
-                    togglePostVoteMutation({ type: "DOWNVOTE" })
-                }
-            />
-
-            <CommentButton count={post.comment_count} />
-        </div>
-    );
-};
