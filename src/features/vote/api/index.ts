@@ -5,7 +5,7 @@ import type { VoteRequest } from "../types";
 const voteApi = {
     // Toggle post vote
     togglePostVote: async (postId: string, data: VoteRequest) => {
-        const response = await api.post(API_ENDPOINT.post.vote(postId), data);
+        const response = await api.post(API_ENDPOINT.vote.toggle(postId), data);
         return response.data;
     },
 };

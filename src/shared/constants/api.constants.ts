@@ -21,7 +21,11 @@ export const API_ENDPOINT = {
         getAll: `${BASE_URL}/posts`,
         getById: (id: string) => `${BASE_URL}/posts/${id}`,
         create: `${BASE_URL}/posts`,
-        vote: (post_id: string) => `${BASE_URL}/posts/${post_id}/votes`,
+    },
+
+    // Vote
+    vote: {
+        toggle: (postId: string) => `${BASE_URL}/posts/${postId}/votes`,
     },
 
     // Comment
