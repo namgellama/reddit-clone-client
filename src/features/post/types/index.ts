@@ -1,10 +1,5 @@
+import type { User } from "@/features/user/types";
 import type { VoteType } from "@/features/vote/types";
-
-interface User {
-    id: string;
-    username: string;
-    email: string;
-}
 
 export interface Post {
     id: string;

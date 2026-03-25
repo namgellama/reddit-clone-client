@@ -3,7 +3,7 @@ import { MessageCircle } from "lucide-react";
 import { Button } from "../ui/button";
 
 interface Props {
-    count: number;
+    count?: number;
     onClick: () => void;
     variant?: "post" | "comment";
 }
