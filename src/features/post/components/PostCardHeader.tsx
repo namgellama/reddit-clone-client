@@ -1,4 +1,5 @@
 import type { Post } from "@/features/post/types";
+import { Dot } from "@/shared/components/custom";
 import { timeAgo } from "@/shared/utils/timeAgo";
 import { Avatar, AvatarFallback } from "../../../shared/components/ui/avatar";
 
@@ -13,7 +14,7 @@ const PostCardHeader = ({ post }: { post: Post }) => {
                 </Avatar>
                 <span className="text-xs font-medium">r/golang</span>
             </div>
-            <div className="size-0.75 bg-muted-foreground rounded-full"></div>
+            <Dot />
             <p className="text-xs text-muted-foreground">
                 {timeAgo(post.date_posted)}
             </p>

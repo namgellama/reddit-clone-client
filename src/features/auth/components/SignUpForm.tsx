@@ -2,8 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState, type Dispatch, type SetStateAction } from "react";
 import { useForm } from "react-hook-form";
 
-import { Form } from "@/shared/components/custom";
-import FormTextInput from "@/shared/components/custom/FormTextInput";
+import { Form, FormTextInput } from "@/shared/components/custom";
 import { Button } from "@/shared/components/ui/button";
 import {
     InputOTP,
