@@ -5,7 +5,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { Logo } from "@/assets";
 import { useAuth } from "@/contexts/AuthContext";
 import { AuthDialog } from "@/features/auth/components";
-import { Avatar, AvatarFallback } from "@/shared/components/ui/avatar";
 import { Badge } from "@/shared/components/ui/badge";
 import { Button } from "@/shared/components/ui/button";
 import {
@@ -14,6 +13,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/shared/components/ui/dropdown-menu";
+import { Avatar } from "../custom";
 
 const NavBar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -57,11 +57,7 @@ const NavBar = () => {
 
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Avatar>
-                                <AvatarFallback className="bg-gray-500 text-background uppercase">
-                                    {user?.username.charAt(0)}
-                                </AvatarFallback>
-                            </Avatar>
+                            <Avatar label={user?.username!} />
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="w-60">
                             <DropdownMenuItem

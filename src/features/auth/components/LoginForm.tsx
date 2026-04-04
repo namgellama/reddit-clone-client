@@ -4,8 +4,7 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
 import { useAuth } from "@/contexts/AuthContext";
-import { Form } from "@/shared/components/custom";
-import FormTextInput from "@/shared/components/custom/FormTextInput";
+import { Form, FormTextInput } from "@/shared/components/custom";
 import { Button } from "@/shared/components/ui/button";
 import { Spinner } from "@/shared/components/ui/spinner";
 import type { LoginFormFields } from "../validation";
