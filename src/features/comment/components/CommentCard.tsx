@@ -1,5 +1,4 @@
-import { VoteControls } from "@/shared/components/common";
-import CommentButton from "@/shared/components/common/CommentButton";
+import { CommentButton, VoteControls } from "@/shared/components/common";
 import { Avatar, Dot } from "@/shared/components/custom";
 import { timeAgo } from "@/shared/utils/timeAgo";
 import type { Comment } from "../types";
@@ -42,8 +41,8 @@ const CommentCardFooter = ({ comment }: { comment: Comment }) => {
         <div className="flex items-center gap-2">
             <VoteControls
                 disabled={false}
-                score={0}
-                userVote={"DOWNVOTE"}
+                score={comment.score}
+                userVote={comment.user_vote}
                 upvoteOnClick={() => {}}
                 downvoteOnClick={() => {}}
                 variant="comment"
