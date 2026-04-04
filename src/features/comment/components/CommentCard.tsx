@@ -1,3 +1,7 @@
+import { useParams } from "react-router-dom";
+
+import { useAuth } from "@/contexts/AuthContext";
+import { useToggleCommentVote } from "@/features/vote/hooks/useToggleCommentVote";
 import { CommentButton, VoteControls } from "@/shared/components/common";
 import { Avatar, Dot } from "@/shared/components/custom";
 import { timeAgo } from "@/shared/utils/timeAgo";
@@ -37,14 +41,28 @@ const CommentCardContent = ({ comment }: { comment: Comment }) => {
 };
 
 const CommentCardFooter = ({ comment }: { comment: Comment }) => {
+    const { id: postId } = useParams();
+    const { isAuthenticated } = useAuth();
+
+    const { toggleCommentVoteMutation, isLoading } = useToggleCommentVote(
+        postId!,
+        comment.id,
+    );
+
     return (
         <div className="flex items-center gap-2">
             <VoteControls
-                disabled={false}
+                disabled={isLoading || !isAuthenticated}
                 score={comment.score}
                 userVote={comment.user_vote}
-                upvoteOnClick={() => {}}
-                downvoteOnClick={() => {}}
+                upvoteOnClick={(e) => {
+                    e.stopPropagation();
+                    toggleCommentVoteMutation({ type: "UPVOTE" });
+                }}
+                downvoteOnClick={(e) => {
+                    e.stopPropagation();
+                    toggleCommentVoteMutation({ type: "DOWNVOTE" });
+                }}
                 variant="comment"
             />
             <CommentButton onClick={() => {}} variant="comment" />

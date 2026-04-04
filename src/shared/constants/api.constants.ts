@@ -25,7 +25,9 @@ export const API_ENDPOINT = {
 
     // Vote
     vote: {
-        toggle: (postId: string) => `${BASE_URL}/posts/${postId}/votes`,
+        togglePostVote: (postId: string) => `${BASE_URL}/posts/${postId}/votes`,
+        toggleCommentVote: (postId: string, commentId: string) =>
+            `${BASE_URL}/posts/${postId}/comments/${commentId}/votes`,
     },
 
     // Comment
