@@ -121,7 +121,7 @@ const VerifyEmail = ({ setStep }: VerifyEmailProps) => {
 
         await verifyEmailMutation({
             email: data.email,
-            otp: Number(otp),
+            otp,
         });
 
         setTimeout(() => {

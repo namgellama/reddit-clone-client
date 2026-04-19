@@ -3,8 +3,8 @@ const BASE_URL = "/api/v1";
 export const API_ENDPOINT = {
     // Auth
     auth: {
-        registerEmail: `${BASE_URL}/auth/signup/register-email`,
-        verifyEmail: `${BASE_URL}/auth/signup/verify-email`,
+        registerEmail: `${BASE_URL}/auth/register-email`,
+        verifyEmail: `${BASE_URL}/auth/verify-email`,
         register: `${BASE_URL}/auth/register`,
         login: `${BASE_URL}/auth/login`,
         logout: `${BASE_URL}/auth/logout`,

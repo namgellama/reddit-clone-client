@@ -19,7 +19,11 @@ api.interceptors.response.use(
             return Promise.reject(error);
         }
 
-        if (error.response.status === 401 && !originalRequest._retry) {
+        if (
+            error.response.status === 401 &&
+            error.response.data.detail !== "Invalid credentials" &&
+            !originalRequest._retry
+        ) {
             originalRequest._retry = true;
 
             try {
