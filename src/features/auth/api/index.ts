@@ -4,7 +4,6 @@ import type { LoginResponse } from "../types/login";
 import type {
     RegisterEmailFormFields,
     RegisterUserFormFields,
-    VerifyEmailFormFields,
 } from "../validation";
 
 const authApi = {
@@ -15,7 +14,7 @@ const authApi = {
     },
 
     // Sign up - verify email
-    verifyEmail: async (data: VerifyEmailFormFields) => {
+    verifyEmail: async (data: { email: string; otp: string }) => {
         const response = await api.post(API_ENDPOINT.auth.verifyEmail, data);
         return response.data;
     },

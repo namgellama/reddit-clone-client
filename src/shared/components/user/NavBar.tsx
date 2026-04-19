@@ -13,7 +13,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/shared/components/ui/dropdown-menu";
-import { Avatar } from "../custom";
+import { Avatar, AvatarFallback } from "../ui/avatar";
 
 const NavBar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -57,9 +57,13 @@ const NavBar = () => {
 
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Avatar label={user?.username!} />
+                            <Avatar>
+                                <AvatarFallback className="bg-gray-500 text-background uppercase">
+                                    {user?.username.charAt(0)}
+                                </AvatarFallback>
+                            </Avatar>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent className="w-60">
+                        <DropdownMenuContent className="w-60 z-50">
                             <DropdownMenuItem
                                 className="hover:bg-muted cursor-pointer px-4 py-2"
                                 onClick={logout}
