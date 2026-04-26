@@ -3,8 +3,13 @@ import api from "@/shared/lib/api";
 
 const postApi = {
     // Get all posts
-    getAll: async () => {
-        const response = await api.get(API_ENDPOINT.post.getAll);
+    getAll: async (skip: number, limit: number) => {
+        const response = await api.get(API_ENDPOINT.post.getAll, {
+            params: {
+                skip,
+                limit,
+            },
+        });
         return response.data;
     },
 
