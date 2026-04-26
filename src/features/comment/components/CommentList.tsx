@@ -19,7 +19,7 @@ const CommentList = ({ postId }: { postId: string }) => {
         return (
             <ErrorMessage
                 message={
-                    error?.response?.data?.message ?? "Error fetching comments"
+                    error?.response?.data?.detail ?? "Error fetching comments"
                 }
             />
         );
