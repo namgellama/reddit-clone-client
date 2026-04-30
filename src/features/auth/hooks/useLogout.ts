@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 
 import type { ApiError } from "@/shared/types/api-error";
 import { handleErrorResponse } from "@/shared/utils/handleErrorResponse";
@@ -6,8 +6,6 @@ import authApi from "../api";
 
 // Logout
 export const useLogout = () => {
-    const queryClient = useQueryClient();
-
     const { mutateAsync: logoutMutation, isPending: isLoading } = useMutation<
         void,
         ApiError,
@@ -15,9 +13,7 @@ export const useLogout = () => {
     >({
         mutationFn: authApi.logout,
         onSuccess: async () => {
-            queryClient.invalidateQueries({
-                queryKey: ["posts", "list"],
-            });
+            window.location.reload();
         },
         onError: (error) => {
             handleErrorResponse(error, "Error logging out");
