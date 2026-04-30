@@ -41,8 +41,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const { loginMutation } = useLogin();
     const { logoutMutation } = useLogout();
 
-    const navigate = useNavigate();
-
     const getCurrentUser = async () => {
         try {
             const response = await api.get<User>(API_ENDPOINT.user.getMe);
@@ -75,7 +73,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         localStorage.removeItem("user");
         setUser(null);
         setIsLoading(false);
-        navigate("/");
     };
 
     return (

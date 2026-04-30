@@ -13,6 +13,9 @@ export const useLogin = () => {
         FormData
     >({
         mutationFn: authApi.login,
+        onSuccess: () => {
+            window.location.reload();
+        },
         onError: (error) => {
             handleErrorResponse(error, "Error logging in");
         },
