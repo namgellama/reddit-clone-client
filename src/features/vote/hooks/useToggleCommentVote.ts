@@ -7,6 +7,35 @@ import { handleErrorResponse } from "@/shared/utils/handleErrorResponse";
 import voteApi from "../api";
 import type { VoteRequest, VoteResponse } from "../types";
 
+const updateCommentTree = (
+    comments: Comment[],
+    commentId: string,
+    updatedVote: VoteResponse,
+): Comment[] => {
+    return comments.map((comment) => {
+        if (comment.id === commentId) {
+            return {
+                ...comment,
+                score: updatedVote.score,
+                user_vote: updatedVote.vote_type,
+            };
+        }
+
+        if (comment.replies.length > 0) {
+            return {
+                ...comment,
+                replies: updateCommentTree(
+                    comment.replies,
+                    commentId,
+                    updatedVote,
+                ),
+            };
+        }
+
+        return comment;
+    });
+};
+
 export const useToggleCommentVote = (postId: string, commentId: string) => {
     const queryClient = useQueryClient();
 
@@ -21,14 +50,10 @@ export const useToggleCommentVote = (postId: string, commentId: string) => {
                     (oldData: Comment[]) => {
                         if (!oldData) return oldData;
 
-                        return oldData.map((comment) =>
-                            comment.id === commentId
-                                ? {
-                                      ...comment,
-                                      score: updatedVote.score,
-                                      user_vote: updatedVote.vote_type,
-                                  }
-                                : comment,
+                        return updateCommentTree(
+                            oldData,
+                            commentId,
+                            updatedVote,
                         );
                     },
                 );
