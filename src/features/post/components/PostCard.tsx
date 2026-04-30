@@ -13,19 +13,18 @@ interface Props {
 const PostCard = ({ post, isList }: Props) => {
     const navigate = useNavigate();
 
-    const handleNavigate = () => {
-        if (!isList) return;
-
-        navigate(`/posts/${post.id}`);
-    };
-
     return (
-        <div
-            className={`space-y-2 ${isList ? "cursor-pointer" : "cursor-default"}`}
-            onClick={handleNavigate}
-        >
-            <PostCardHeader post={post} />
-            <PostCardContent post={post} />
+        <div className="space-y-2">
+            <div
+                className={isList ? "cursor-pointer" : ""}
+                onClick={() => {
+                    if (isList) navigate(`/posts/${post.id}`);
+                }}
+            >
+                <PostCardHeader post={post} />
+                <PostCardContent post={post} />
+            </div>
+
             <PostCardFooter post={post} />
         </div>
     );
