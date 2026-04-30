@@ -9,13 +9,22 @@ import type { Comment } from "../types";
 
 const CommentCard = ({ comment }: { comment: Comment }) => {
     return (
-        <div>
+        <div className="mt-3">
             <div className="flex items-start gap-2">
                 <Avatar label={comment.user.username} />
-                <div>
+
+                <div className="flex-1">
                     <CommentCardHeader comment={comment} />
                     <CommentCardContent comment={comment} />
                     <CommentCardFooter comment={comment} />
+
+                    {comment.replies.length > 0 && (
+                        <div className="ml-6 border-l pl-4 mt-2 space-y-2">
+                            {comment.replies.map((reply) => (
+                                <CommentCard key={reply.id} comment={reply} />
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

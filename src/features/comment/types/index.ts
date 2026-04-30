@@ -12,4 +12,5 @@ export interface Comment {
     parent_id: string;
     score: number;
     user_vote: VoteType | null;
+    replies: Comment[];
 }
